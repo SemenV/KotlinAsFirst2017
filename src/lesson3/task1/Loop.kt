@@ -147,7 +147,7 @@ fun isCoPrime(m: Int, n: Int): Boolean {
  * Например, для интервала 21..28 21 <= 5*5 <= 28, а для интервала 51..61 квадрата не существует.
  */
 fun squareBetweenExists(m: Int, n: Int): Boolean {
-    for (i in 0..(max(m,n)+1)){
+    for (i in 0..(max(m,n) + 1)){
         var i1 = i.toDouble()
         if (sqr(i1) in min(m,n)..max(m,n)) return true
     }
@@ -163,18 +163,17 @@ fun squareBetweenExists(m: Int, n: Int): Boolean {
  */
 fun sin(x: Double, eps: Double): Double {
     var x1 = x
-    while (x1 > 2*PI) x1 -= 2*PI
-    while (x1 < 2*PI) x1 += 2*PI
+    while (x1 > 2 * PI) x1 -= 2 * PI
+    while (x1 < 2 * PI) x1 += 2 * PI
 
     var k = 1
     var sign = -1.0
     var sum = 0.0
-    while (abs(  sign*(-1)*pow(x1,k.toDouble())/ factorial(k)) >= eps){
-        var SeqMemb = sign*(-1)*pow(x1,k.toDouble())/ factorial(k)
+    while (abs(sign * (-1) * pow(x1,k.toDouble()) / factorial(k)) >= eps){
+        var SeqMemb = sign* (-1) * pow(x1,k.toDouble()) / factorial(k)
         k += 2
         sign *= (-1)
         sum += SeqMemb
-        System.out.print("$SeqMemb ")
     }
     return sum
 }

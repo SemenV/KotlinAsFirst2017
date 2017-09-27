@@ -38,7 +38,7 @@ fun minBiRoot(a: Double, b: Double, c: Double): Double {
 fun ageDescription(age: Int): String {
     return when {
         (age % 10 == 1 && (age != 111)) -> "$age год"
-        (age %10 == 2 && (age > 20 &&  age < 110) or (age > 115)) ->return "$age года"
+        (age % 10 == 2 && (age > 20 &&  age < 110) or (age > 115)) ->return "$age года"
         (age >= 5 && age <= 20) -> "$age лет"
         (age >= 111 && age <= 114) -> "$age лет"
         else -> "$age лет"
@@ -78,8 +78,8 @@ fun timeForHalfWay(t1: Double, v1: Double,
 fun whichRookThreatens(kingX: Int, kingY: Int,
                        rookX1: Int, rookY1: Int,
                        rookX2: Int, rookY2: Int): Int {
-    val kingRook1 = (kingX == rookX1) or (kingY == rookY1)
-    val kingRook2 = (kingX == rookX2) or (kingY == rookY2)
+    val kingRook1 = (kingX == rookX1) || (kingY == rookY1)
+    val kingRook2 = (kingX == rookX2) || (kingY == rookY2)
     return when {
         kingRook1 && kingRook2 -> 3
         kingRook1 -> 1
@@ -102,7 +102,7 @@ fun rookOrBishopThreatens(kingX: Int, kingY: Int,
                           rookX: Int, rookY: Int,
                           bishopX: Int, bishopY: Int): Int {
     val damageBishop = abs(bishopX - kingX) == abs(bishopY - kingY)
-    val damageRook = (kingX==rookX) or (kingY == rookY)
+    val damageRook = (kingX == rookX) or (kingY == rookY)
     return when{
         damageBishop && damageRook -> 3
         damageBishop -> 2
@@ -123,9 +123,10 @@ fun rookOrBishopThreatens(kingX: Int, kingY: Int,
 fun triangleKind(a: Double, b: Double, c: Double): Int {
     val maxNumber = max(max(a,b),c)
     val minNumber = min(min(a,b),c)
-    val x = a + b + c - maxNumber - minNumber
-    if (maxNumber - minNumber - x > 0) return -1
-    val sqrtxmin = sqrt(pow(minNumber,2.0) + pow(x,2.0))
+    val middleSide = a + b + c - maxNumber - minNumber
+
+    if (maxNumber - minNumber - middleSide > 0) return -1
+    val sqrtxmin = sqrt(pow(minNumber,2.0) + pow(middleSide,2.0))
     return when{
         maxNumber == sqrtxmin -> 1
         maxNumber < sqrtxmin -> 0
@@ -143,7 +144,6 @@ fun triangleKind(a: Double, b: Double, c: Double): Int {
  * Если пересечения нет, вернуть -1.
  */
 fun segmentLength(a: Int, b: Int, c: Int, d: Int): Int {
-    val bd = (b >= d)
     return when{
         (b >= d) && (a <= d) && (a >= c) -> d - a
         (b >= d) && (a <= c) -> d - c
@@ -151,6 +151,4 @@ fun segmentLength(a: Int, b: Int, c: Int, d: Int): Int {
         (b <= d) && (b >= c) && (a <= c) -> b - c
         else -> -1
     }
-
-
 }
