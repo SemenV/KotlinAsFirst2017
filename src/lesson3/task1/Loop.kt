@@ -167,12 +167,12 @@ fun sin(x: Double, eps: Double): Double {
     while (x1 < 2 * PI) x1 += 2 * PI
 
     var k = 1
-    var sign = -1.0
+    var sign = 1
     var sum = 0.0
-    while (abs(sign * (-1) * pow(x1,k.toDouble()) / factorial(k)) >= eps){
-        var SeqMemb = sign * (-1) * pow(x1,k.toDouble()) / factorial(k)
+    while (abs(sign * pow(x1,k.toDouble()) / factorial(k)) >= eps){
+        var SeqMemb = sign * pow(x1,k.toDouble()) / factorial(k)
         k += 2
-        sign *= (-1)
+        sign *= -1
         sum += SeqMemb
     }
     return sum

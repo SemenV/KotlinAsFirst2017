@@ -2,6 +2,7 @@
 package lesson2.task1
 
 import lesson1.task1.discriminant
+import lesson1.task1.sqr
 import java.lang.Math.*
 
 
@@ -38,9 +39,9 @@ fun minBiRoot(a: Double, b: Double, c: Double): Double {
 fun ageDescription(age: Int): String {
     return when {
         (age % 10 == 1 && (age != 111)) -> "$age год"
-        (age % 10 == 2 && (age > 20 &&  age < 110) or (age > 115)) ->return "$age года"
-        (age >= 5 && age <= 20) -> "$age лет"
-        (age >= 111 && age <= 114) -> "$age лет"
+        (age % 10 == 2 && ((age in 21..109) || (age > 115) || (age < 3))) ->return "$age года"
+        (age in 5..20) -> "$age лет"
+        (age in 111..114) -> "$age лет"
         else -> "$age лет"
     }
 
@@ -126,10 +127,10 @@ fun triangleKind(a: Double, b: Double, c: Double): Int {
     val middleSide = a + b + c - maxNumber - minNumber
 
     if (maxNumber - minNumber - middleSide > 0) return -1
-    val sqrtxmin = sqrt(pow(minNumber,2.0) + pow(middleSide,2.0))
+    val sqrtxmin = pow(minNumber,2.0) + pow(middleSide,2.0)
     return when{
-        maxNumber == sqrtxmin -> 1
-        maxNumber < sqrtxmin -> 0
+        sqr(maxNumber) == sqrtxmin -> 1
+        sqr(maxNumber) < sqrtxmin -> 0
         else -> 2
     }
 
@@ -143,12 +144,10 @@ fun triangleKind(a: Double, b: Double, c: Double): Int {
  * Найти длину пересечения отрезков AB и CD.
  * Если пересечения нет, вернуть -1.
  */
-fun segmentLength(a: Int, b: Int, c: Int, d: Int): Int {
-    return when{
-        (b >= d) && (a <= d) && (a >= c) -> d - a
-        (b >= d) && (a <= c) -> d - c
-        (b <= d) && (b >= c) && (a >= c) -> b - a
-        (b <= d) && (b >= c) && (a <= c) -> b - c
-        else -> -1
-    }
+fun segmentLength(a: Int, b: Int, c: Int, d: Int): Int = when{
+    (b >= d) && (a <= d) && (a >= c) -> d - a
+    (b >= d) && (a <= c) -> d - c
+    (b <= d) && (b >= c) && (a >= c) -> b - a
+    (b <= d) && (b >= c) && (a <= c) -> b - c
+    else -> -1
 }
