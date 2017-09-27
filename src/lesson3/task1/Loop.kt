@@ -56,7 +56,7 @@ fun digitCountInNumber(n: Int, m: Int): Int =
         when {
             n == m -> 1
             n < 10 -> 0
-            else -> digitCountInNumber(n / 10, m) + digitCountInNumber(n % 10, m)
+            else -> digitCountInNumber(n / 10,m) + digitCountInNumber(n % 10,m)
         }
 
 /**
@@ -82,7 +82,7 @@ fun digitNumber(n: Int): Int {
  * Найти число Фибоначчи из ряда 1, 1, 2, 3, 5, 8, 13, 21, ... с номером n.
  * Ряд Фибоначчи определён следующим образом: fib(1) = 1, fib(2) = 1, fib(n+2) = fib(n) + fib(n+1)
  */
-fun fib(n: Int): Int = if (n <= 2) 1 else fib(n-2) + fib(n-1)
+fun fib(n: Int): Int = if (n <= 2) 1 else fib(n - 2) + fib(n - 1)
 
 /**
  * Простая
@@ -148,8 +148,8 @@ fun isCoPrime(m: Int, n: Int): Boolean {
  */
 fun squareBetweenExists(m: Int, n: Int): Boolean {
     for (i in 0..(max(m,n) + 1)){
-        var i1 = i.toDouble()
-        if (sqr(i1) in min(m,n)..max(m,n)) return true
+        var iDouble = i.toDouble()
+        if (sqr(iDouble) in min(m,n)..max(m,n)) return true
     }
     return false
 }
@@ -170,7 +170,7 @@ fun sin(x: Double, eps: Double): Double {
     var sign = -1.0
     var sum = 0.0
     while (abs(sign * (-1) * pow(x1,k.toDouble()) / factorial(k)) >= eps){
-        var SeqMemb = sign* (-1) * pow(x1,k.toDouble()) / factorial(k)
+        var SeqMemb = sign * (-1) * pow(x1,k.toDouble()) / factorial(k)
         k += 2
         sign *= (-1)
         sum += SeqMemb
