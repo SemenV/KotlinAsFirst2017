@@ -92,7 +92,7 @@ fun fib(n: Int): Int = if (n <= 2) 1 else fib(n - 2) + fib(n - 1)
  */
 fun lcm(m: Int, n: Int): Int {
     var maxNumber = Math.max(m,n)
-    while ((maxNumber % m > 0) or (maxNumber % n > 0)){
+    while ((maxNumber % m > 0) || (maxNumber % n > 0)){
         maxNumber++
     }
     return maxNumber
