@@ -103,7 +103,7 @@ fun rookOrBishopThreatens(kingX: Int, kingY: Int,
                           rookX: Int, rookY: Int,
                           bishopX: Int, bishopY: Int): Int {
     val damageBishop = abs(bishopX - kingX) == abs(bishopY - kingY)
-    val damageRook = (kingX == rookX) or (kingY == rookY)
+    val damageRook = (kingX == rookX) || (kingY == rookY)
     return when{
         damageBishop && damageRook -> 3
         damageBishop -> 2

@@ -185,7 +185,22 @@ fun sin(x: Double, eps: Double): Double {
  * cos(x) = 1 - x^2 / 2! + x^4 / 4! - x^6 / 6! + ...
  * Нужную точность считать достигнутой, если очередной член ряда меньше eps по модулю
  */
-fun cos(x: Double, eps: Double): Double = TODO()
+fun cos(x: Double, eps: Double): Double {
+    var varx = x
+    while (varx > 2 * PI) varx -= 2 * PI
+    while (varx < 2 * PI) varx += 2 * PI
+
+    var k = 2
+    var sign = -1
+    var sum = 1.0
+    while (abs(sign * pow(varx,k.toDouble()) / factorial(k)) >= eps){
+        var SeqMemb = sign * pow(varx,k.toDouble()) / factorial(k)
+        k += 2
+        sign *= -1
+        sum += SeqMemb
+    }
+    return sum
+}
 
 /**
  * Средняя
@@ -193,7 +208,15 @@ fun cos(x: Double, eps: Double): Double = TODO()
  * Поменять порядок цифр заданного числа n на обратный: 13478 -> 87431.
  * Не использовать строки при решении задачи.
  */
-fun revert(n: Int): Int = TODO()
+fun revert(n: Int): Int {
+    var varn = n
+    var newn = 0
+    while (varn != 0){
+        newn = newn * 10 + varn % 10
+        varn /= 10
+    }
+    return newn
+}
 
 /**
  * Средняя
@@ -202,7 +225,16 @@ fun revert(n: Int): Int = TODO()
  * первая цифра равна последней, вторая -- предпоследней и так далее.
  * 15751 -- палиндром, 3653 -- нет.
  */
-fun isPalindrome(n: Int): Boolean = TODO()
+fun isPalindrome(n: Int): Boolean {
+    var varn = n
+    var revertn = revert(varn)
+    while (revertn != 0){
+        if ((revertn % 10) != (varn % 10)) return false
+        revertn /= 10
+        varn /= 10
+    }
+    return true
+}
 
 /**
  * Средняя
@@ -219,7 +251,20 @@ fun hasDifferentDigits(n: Int): Boolean = TODO()
  * 149162536496481100121144...
  * Например, 2-я цифра равна 4, 7-я 5, 12-я 6.
  */
-fun squareSequenceDigit(n: Int): Int = TODO()
+fun squareSequenceDigit(n: Int): Int {
+    var number = 0
+    var kvadrat_k = 1
+    var number_of_digits = 0
+    var kvadrat = 1
+    while (number_of_digits < n){
+        kvadrat = 0
+        kvadrat = kvadrat_k * kvadrat_k
+        number_of_digits += digitNumber(kvadrat)
+        kvadrat_k ++
+    }
+
+    return kvadrat / (pow(10.0,(number_of_digits - n).toDouble())).toInt() % 10
+}
 
 /**
  * Сложная
