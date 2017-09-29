@@ -242,7 +242,14 @@ fun isPalindrome(n: Int): Boolean {
  * Для заданного числа n определить, содержит ли оно различающиеся цифры.
  * Например, 54 и 323 состоят из разных цифр, а 111 и 0 из одинаковых.
  */
-fun hasDifferentDigits(n: Int): Boolean = TODO()
+fun hasDifferentDigits(n: Int): Boolean {
+    var newn = n
+    while (newn != 0){
+       if (n % 10 != newn % 10) return true
+        newn /= 10
+    }
+    return false
+}
 
 /**
  * Сложная
@@ -252,10 +259,9 @@ fun hasDifferentDigits(n: Int): Boolean = TODO()
  * Например, 2-я цифра равна 4, 7-я 5, 12-я 6.
  */
 fun squareSequenceDigit(n: Int): Int {
-    var number = 0
     var kvadrat_k = 1
     var number_of_digits = 0
-    var kvadrat = 1
+    var kvadrat = 0
     while (number_of_digits < n){
         kvadrat = 0
         kvadrat = kvadrat_k * kvadrat_k
@@ -273,4 +279,16 @@ fun squareSequenceDigit(n: Int): Int {
  * 1123581321345589144...
  * Например, 2-я цифра равна 1, 9-я 2, 14-я 5.
  */
-fun fibSequenceDigit(n: Int): Int = TODO()
+fun fibSequenceDigit(n: Int): Int {
+    var fib_k = 1
+    var number_of_digits = 0
+    var kvadrat = 0
+    while (number_of_digits < n){
+        kvadrat = 0
+        kvadrat = fib(fib_k)
+        number_of_digits += digitNumber(kvadrat)
+        fib_k ++
+    }
+
+    return kvadrat / (pow(10.0,(number_of_digits - n).toDouble())).toInt() % 10
+}
