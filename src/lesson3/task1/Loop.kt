@@ -285,11 +285,10 @@ fun squareSequenceDigit(n: Int): Int {
 fun fibSequenceDigit(n: Int): Int {
     var number = 1
     var sizeNumbers = 0
-    var numberFib = 0
     while (sizeNumbers < n) {
-        numberFib = fib(number)
-        sizeNumbers += digitNumber(numberFib)
+        sizeNumbers += digitNumber(fib(number))
         number++
     }
+    val numberFib = fib(number - 1)
     return numberFib / (powInt(10, (sizeNumbers - n))) % 10
 }
