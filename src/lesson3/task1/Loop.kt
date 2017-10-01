@@ -5,6 +5,10 @@ import lesson1.task1.sqr
 import java.util.*
 import java.lang.Math.*
 
+fun powInt(n: Int,x: Int): Int {
+    return (pow(n.toDouble(),x.toDouble())).toInt()
+}
+
 
 /**
  * Пример
@@ -169,7 +173,7 @@ fun sin(x: Double, eps: Double): Double {
     var k = 1
     var sign = 1
     var sum = 0.0
-    while (abs(sign * pow(x1,k.toDouble()) / factorial(k)) >= eps){
+    while (pow(x1,k.toDouble()) / factorial(k) >= eps){
         var SeqMemb = sign * pow(x1,k.toDouble()) / factorial(k)
         k += 2
         sign *= -1
@@ -193,7 +197,7 @@ fun cos(x: Double, eps: Double): Double {
     var k = 2
     var sign = -1
     var sum = 1.0
-    while (abs(sign * pow(varx,k.toDouble()) / factorial(k)) >= eps){
+    while (pow(varx,k.toDouble()) / factorial(k) >= eps){
         var SeqMemb = sign * pow(varx,k.toDouble()) / factorial(k)
         k += 2
         sign *= -1
@@ -236,6 +240,7 @@ fun isPalindrome(n: Int): Boolean {
     return true
 }
 
+
 /**
  * Средняя
  *
@@ -259,19 +264,17 @@ fun hasDifferentDigits(n: Int): Boolean {
  * Например, 2-я цифра равна 4, 7-я 5, 12-я 6.
  */
 fun squareSequenceDigit(n: Int): Int {
-    var kvadrat_k = 1
-    var number_of_digits = 0
-    var kvadrat = 0
-    while (number_of_digits < n){
-        kvadrat = 0
-        kvadrat = kvadrat_k * kvadrat_k
-        number_of_digits += digitNumber(kvadrat)
-        kvadrat_k ++
+    var number = 1
+    var sizeNumbers = 0
+    var numberSquare = 0
+    while (sizeNumbers  < n){
+        numberSquare = number * number
+        sizeNumbers  += digitNumber(numberSquare)
+        number ++
     }
 
-    return kvadrat / (pow(10.0,(number_of_digits - n).toDouble())).toInt() % 10
+    return numberSquare / (powInt(10,(sizeNumbers  - n))) % 10
 }
-
 /**
  * Сложная
  *
@@ -280,15 +283,13 @@ fun squareSequenceDigit(n: Int): Int {
  * Например, 2-я цифра равна 1, 9-я 2, 14-я 5.
  */
 fun fibSequenceDigit(n: Int): Int {
-    var fib_k = 1
-    var number_of_digits = 0
-    var kvadrat = 0
-    while (number_of_digits < n){
-        kvadrat = 0
-        kvadrat = fib(fib_k)
-        number_of_digits += digitNumber(kvadrat)
-        fib_k ++
+    var number = 1
+    var sizeNumbers = 0
+    var numberFib = 0
+    while (sizeNumbers < n) {
+        numberFib = fib(number)
+        sizeNumbers += digitNumber(numberFib)
+        number++
     }
-
-    return kvadrat / (pow(10.0,(number_of_digits - n).toDouble())).toInt() % 10
+    return numberFib / (powInt(10, (sizeNumbers - n))) % 10
 }
