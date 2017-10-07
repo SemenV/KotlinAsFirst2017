@@ -1,7 +1,6 @@
 @file:Suppress("UNUSED_PARAMETER")
 package lesson4.task1
 
-import com.sun.jdi.CharValue
 import lesson1.task1.discriminant
 import java.lang.Math.*
 
@@ -111,11 +110,11 @@ fun buildSumExample(list: List<Int>) = list.joinToString(separator = " + ", post
 fun abs(v: List<Double>): Double {
     var sum = 0.0
     for (i in 0 until v.size){
-        var k = 1.0
-        sum = pow(v[i],k)
+        var k = 2.0
+        sum += pow(v[i],k)
         k++
     }
-    return sum
+    return sqrt(sum)
 }
 
 /**
@@ -312,7 +311,20 @@ fun decimalFromString(str: String, base: Int): Int {
  * 90 = XC, 100 = C, 400 = CD, 500 = D, 900 = CM, 1000 = M.
  * Например: 23 = XXIII, 44 = XLIV, 100 = C
  */
-fun roman(n: Int): String = TODO()
+fun roman(n: Int): String {
+    var str = ""
+    var newn = n
+    var numbers = listOf(1000,900,500,400,100,90,50,40,10,9,5,4,1)
+    var simbols = listOf("M","CM","D","CD","C","XC","L","XL","X","IX","V","IV","I")
+    for(i in 0 until numbers.size){
+        while (newn >= numbers[i]){
+            str += simbols[i]
+            newn -= numbers[i]
+        }
+    }
+    return str
+}
+
 
 /**
  * Очень сложная
@@ -343,12 +355,10 @@ fun dozensAndUnits(b: Int,c: Int): String{
     val first = b / 100
     val second = b / 10 % 10
     val thread = b % 10
-    //if ((first == 0) && (second == 0) && (thread == 1)) str + " один"
-    //if ((first == 0) && (second == 0) && (thread == 2)) str + " два"
     return when{
         (second ==1) && (thread == 0) -> str + " десять"
         (second ==1) && (thread != 0) -> str + units_1_(thread)
-        (c == 2) && (first == 0) && (second == 0) && (thread == 1) -> str + " один"
+        (c == 2) && (first == 0) && (second == 0) && (thread == 1) -> str + " один" //что бы не создавать новый units
         (c == 2) && (first == 0) && (second == 0) && (thread == 2) -> str + " два"
         (second == 0) -> str + units(thread)
         else -> str +dozens(second) + units(thread)
