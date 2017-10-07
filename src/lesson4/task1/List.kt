@@ -242,8 +242,6 @@ fun convert(n: Int, base: Int): List<Int> {
     do{
         a.add(0,newn % base)
         newn /= base
-        println(newn)
-
     }while (newn >= base)
     if (newn != 0)  a.add(0,newn)
     return a.toList()

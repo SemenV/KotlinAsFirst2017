@@ -106,20 +106,17 @@ fun fib(n: Int): Int {
  * минимальное число k, которое делится и на m и на n без остатка
  */
 fun lcm(m: Int, n: Int): Int {
-    var minMN = min(m,n)
-    var divisor = 2
-    var productDivisor = max(m,n)
-    while ((productDivisor % m != 0) || (productDivisor % n != 0)){
-        if ((max(m,n) % divisor != 0) && (minMN % divisor == 0)) {
-            productDivisor *= divisor
-            minMN /= divisor
-            divisor--
+    var newM = m
+    var newN = n
+    while (newM != newN) {
+        if (newM > newN) {
+            newM -= newN
+        } else {
+            newN -= newM
         }
-        divisor++
     }
-    return productDivisor
+    return m*n/ newM
 }
-
 
 /**
  * Простая
