@@ -333,9 +333,9 @@ fun roman(n: Int): String {
  */
 fun russian(n: Int): String {
     var str = ""
-    val firt3Number = hundred(n / 100000) + dozensAndUnits(n / 1000 % 1000,1)
+    val firt3Number = hundred(n / 100000) + dozensAndUnits(n / 1000 % 100,1)
     //собираем 1xx xxx, x11 xxx, xx1 xxx Причем x11 xxx, xx1 xxx - зависят друг от друга
-    val last3Number = hundred(n / 100 % 10) + dozensAndUnits(n % 1000,2)
+    val last3Number = hundred(n / 100 % 10) + dozensAndUnits(n % 100,2)
     //то же самое, только для последних 3ех элементов
 
     if (n / 1000 > 0) {
@@ -350,14 +350,13 @@ fun russian(n: Int): String {
 }
 fun dozensAndUnits(b: Int,c: Int): String{
     var str = ""
-    val first = b / 100
-    val second = b / 10 % 10
+    val second = b / 10
     val thread = b % 10
     return when{
         (second ==1) && (thread == 0) -> str + " десять"
         (second ==1) && (thread != 0) -> str + units_1_(thread)
-        (c == 2) && (first == 0) && (second == 0) && (thread == 1) -> str + " один" //что бы не создавать новый units
-        (c == 2) && (first == 0) && (second == 0) && (thread == 2) -> str + " два"
+        (c == 2) && (thread == 1) -> str + dozens(second) +" один" //что бы не создавать новый units
+        (c == 2) && (thread == 2) -> str + dozens(second) +" два"
         (second == 0) -> str + units(thread)
         else -> str +dozens(second) + units(thread)
     }
