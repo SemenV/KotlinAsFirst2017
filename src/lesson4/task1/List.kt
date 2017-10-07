@@ -335,6 +335,7 @@ fun russian(n: Int): String {
     var str = ""
     val firt3Number = hundred(n / 100000) + dozensAndUnits(n / 1000 % 100,1)
     //собираем 1xx xxx, x11 xxx, xx1 xxx Причем x11 xxx, xx1 xxx - зависят друг от друга
+    // с - расположение относительно первых xxx и последних xxx
     val last3Number = hundred(n / 100 % 10) + dozensAndUnits(n % 100,2)
     //то же самое, только для последних 3ех элементов
 
@@ -403,7 +404,7 @@ fun hundred(b: Int): String = when(b){
     1 -> " сто"
     2 -> " двести"
     3 -> " триста"
-    4 -> " четыресто"
+    4 -> " четыреста"
     5 -> " пятьсот"
     6 -> " шетьсот"
     7 -> " семьсот"
