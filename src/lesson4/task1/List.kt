@@ -321,4 +321,106 @@ fun roman(n: Int): String = TODO()
  * Например, 375 = "триста семьдесят пять",
  * 23964 = "двадцать три тысячи девятьсот шестьдесят четыре"
  */
-fun russian(n: Int): String = TODO()
+fun russian(n: Int): String {
+    var str = ""
+    val firt3Number = hundred(n / 100000) + dozensAndUnits(n / 1000 % 1000,1)
+    //собираем 1xx xxx, x11 xxx, xx1 xxx Причем x11 xxx, xx1 xxx - зависят друг от друга
+    val last3Number = hundred(n / 100 % 10) + dozensAndUnits(n % 1000,2)
+    //то же самое, только для последних 3ех элементов
+
+    if (n / 1000 > 0) {
+        if (n / 1000 % 10 != 0)
+            str = firt3Number + tisa4i(n / 1000 % 10) + last3Number
+        else
+            str = firt3Number + " тысяч" + last3Number
+    }
+    else str = last3Number
+
+    return str.trim()
+}
+fun dozensAndUnits(b: Int,c: Int): String{
+    var str = ""
+    val first = b / 100
+    val second = b / 10 % 10
+    val thread = b % 10
+    //if ((first == 0) && (second == 0) && (thread == 1)) str + " один"
+    //if ((first == 0) && (second == 0) && (thread == 2)) str + " два"
+    return when{
+        (second ==1) && (thread == 0) -> str + " десять"
+        (second ==1) && (thread != 0) -> str + units_1_(thread)
+        (c == 2) && (first == 0) && (second == 0) && (thread == 1) -> str + " один"
+        (c == 2) && (first == 0) && (second == 0) && (thread == 2) -> str + " два"
+        (second == 0) -> str + units(thread)
+        else -> str +dozens(second) + units(thread)
+    }
+}
+fun units(a2: Int): String{
+    return when(a2){
+        1 -> " одна"
+        2 -> " две"
+        3 -> " три"
+        4 -> " четыре"
+        5 -> " пять"
+        6 -> " шесть"
+        7 -> " семь"
+        8 -> " восемь"
+        9 -> " девять"
+        else -> ""
+    }
+}
+fun dozens(b: Int): String {
+    return when (b) {
+        2 -> " двадцать"
+        3 -> " тридцать"
+        4 -> " сорок"
+        5 -> " пятдесят"
+        6 -> " шестьдесят"
+        7 -> " семьдесят"
+        8 -> " восемьдесят"
+        9 -> " девяносто"
+        else -> ""
+    }
+}
+
+fun units_1_(a1: Int): String{
+    return when(a1){
+        1 -> " одинадцать"
+        2 -> " двенадцать"
+        3 -> " тридцать"
+        4 -> " четырнадцать"
+        5 -> " птнадцать"
+        6 -> " шестнадцать"
+        7 -> " семнадцать"
+        8 -> " восемнадцать"
+        9 -> " девятнадцать"
+        else -> ""
+    }
+}
+fun hundred(b: Int): String{
+    return when(b){
+        1 -> " сто"
+        2 -> " двести"
+        3 -> " триста"
+        4 -> " четыресто"
+        5 -> " пятьсот"
+        6 -> " шетьсот"
+        7 -> " семьсот"
+        8 -> " восемьсот"
+        9 -> " девятьсот"
+        else -> ""
+    }
+}
+fun tisa4i(first: Int): String{
+    return when(first){
+        1 -> " тысяча"
+        2 -> " тысячи"
+        3 -> " тысячи"
+        4 -> " тысячи"
+        5 -> " тысяч"
+        6 -> " тысяч"
+        7 -> " тысяч"
+        8 -> " тысяч"
+        9 -> " тысяч"
+        else -> " тысяч"
+    }
+}
