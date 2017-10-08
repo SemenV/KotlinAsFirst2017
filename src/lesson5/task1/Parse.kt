@@ -1,6 +1,9 @@
 @file:Suppress("UNUSED_PARAMETER")
 package lesson5.task1
 
+import java.text.SimpleDateFormat
+import java.util.*
+
 /**
  * Пример
  *
@@ -10,11 +13,16 @@ package lesson5.task1
 fun timeStrToSeconds(str: String): Int {
     val parts = str.split(":")
     var result = 0
-    for (part in parts) {
-        val number = part.toInt()
-        result = result * 60 + number
+    try {
+        for (part in parts) {
+            val number = part.toInt()
+            result = result * 60 + number
+        }
+        return result
     }
-    return result
+    catch(e: NumberFormatException){
+        return -1
+    }
 }
 
 /**
@@ -66,7 +74,33 @@ fun main(args: Array<String>) {
  * День и месяц всегда представлять двумя цифрами, например: 03.04.2011.
  * При неверном формате входной строки вернуть пустую строку
  */
-fun dateStrToDigit(str: String): String = TODO()
+fun dateStrToDigit(str: String): String {
+    var partsLine = listOf("","","")
+
+    //хочется что бы создался лист из 3ех элементов в любом случае
+    //хотя чувствуется, что это плохой код ( Как лучше поступить?
+
+    partsLine = str.split(" ").toMutableList()
+    partsLine[1] = strMonthToInt(partsLine[1])
+    for (i in 0 until partsLine.size) if (partsLine[i] == "") return ""
+    return partsLine.joinToString(separator = ".")
+
+}
+fun strMonthToInt(strMonth: String): String = when(strMonth){
+    "января" -> "01"
+    "февраля" -> "02"
+    "марта" -> "03"
+    "апреля" -> "04"
+    "мая" -> "05"
+    "июня" -> "06"
+    "июля" -> "07"
+    "августа" -> "08"
+    "сентября" -> "09"
+    "октября" -> "10"
+    "ноября" -> "11"
+    "декабря" -> "12"
+    else -> ""
+}
 
 /**
  * Средняя
