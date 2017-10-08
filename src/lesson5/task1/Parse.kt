@@ -70,16 +70,11 @@ fun main(args: Array<String>) {
  * При неверном формате входной строки вернуть пустую строку
  */
 fun dateStrToDigit(str: String): String {
-    var partsLine = listOf("","","")
-
-    //хочется что бы создался лист из 3ех элементов в любом случае
-    //хотя чувствуется, что это плохой код ( Как лучше поступить?
-
-    partsLine = str.split(" ").toMutableList()
+    var partsLine = str.split(" ").toMutableList()
+    if (partsLine.size < 3) return ""
     partsLine[1] = strMonthToInt(partsLine[1])
     for (i in 0 until partsLine.size) if (partsLine[i] == "") return ""
-    return partsLine.joinToString(separator = ".")
-
+    return String.format("%02d.%02d.%04d",partsLine[0].toInt(),partsLine[1].toInt(),partsLine[2].toInt())
 }
 fun strMonthToInt(strMonth: String): String = when(strMonth){
     "января" -> "01"
