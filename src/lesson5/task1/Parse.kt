@@ -74,7 +74,7 @@ fun dateStrToDigit(str: String): String {
     if (partsLine.size < 3) return ""
     partsLine[1] = strMonthToInt(partsLine[1])
     for (i in 0 until partsLine.size) if (partsLine[i] == "") return ""
-    return String.format("%02d.%02d.%04d",partsLine[0].toInt(),partsLine[1].toInt(),partsLine[2].toInt())
+    return String.format("%02d.%02d.%d",partsLine[0].toInt(),partsLine[1].toInt(),partsLine[2].toInt())
 }
 fun strMonthToInt(strMonth: String): String = when(strMonth){
     "января" -> "01"

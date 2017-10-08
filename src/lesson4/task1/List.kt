@@ -340,7 +340,7 @@ fun russian(n: Int): String {
     //то же самое, только для последних 3ех элементов
 
     if (n / 1000 > 0) {
-        if (n / 1000 % 10 != 0)
+        if ((n / 1000 % 10 != 0) && (n / 10000 % 10 != 1))
             str = firt3Number + tisa4i(n / 1000 % 10) + last3Number
         else
             str = firt3Number + " тысяч" + last3Number
