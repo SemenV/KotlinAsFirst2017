@@ -1,4 +1,5 @@
 @file:Suppress("UNUSED_PARAMETER")
+
 package lesson2.task1
 
 import lesson1.task1.discriminant
@@ -57,14 +58,12 @@ fun ageDescription(age: Int): String {
  */
 fun timeForHalfWay(t1: Double, v1: Double,
                    t2: Double, v2: Double,
-                   t3: Double, v3: Double): Double{
+                   t3: Double, v3: Double): Double {
     val x = (t1 * v1 + t2 * v2 + t3 * v3) / 2
-
-    return when{
-        (x <= t1 * v1) -> x / v1
-        (x <= (t1 * v1) + (t2 * v2)) -> t1 + (x - t1 * v1) / v2
+    return when {
+        x <= t1 * v1 -> x / v1
+        x <= (t1 * v1) + (t2 * v2) -> t1 + (x - t1 * v1) / v2
         else -> t1 + t2 + (x - (t1 * v1 + t2 * v2)) / v3
-
     }
 }
 
@@ -105,13 +104,12 @@ fun rookOrBishopThreatens(kingX: Int, kingY: Int,
                           bishopX: Int, bishopY: Int): Int {
     val damageBishop = abs(bishopX - kingX) == abs(bishopY - kingY)
     val damageRook = (kingX == rookX) || (kingY == rookY)
-    return when{
+    return when {
         damageBishop && damageRook -> 3
         damageBishop -> 2
         damageRook -> 1
         else -> 0
     }
-
 }
 
 /**
@@ -123,18 +121,16 @@ fun rookOrBishopThreatens(kingX: Int, kingY: Int,
  * Если такой треугольник не существует, вернуть -1.
  */
 fun triangleKind(a: Double, b: Double, c: Double): Int {
-    val maxNumber = max(max(a,b),c)
-    val minNumber = min(min(a,b),c)
+    val maxNumber = maxOf(a, b, c)
+    val minNumber = minOf(a, b, c)
     val middleSide = a + b + c - maxNumber - minNumber
-
     if (maxNumber - minNumber - middleSide > 0) return -1
-    val sqrtxmin = pow(minNumber,2.0) + pow(middleSide,2.0)
-    return when{
-        sqr(maxNumber) == sqrtxmin -> 1
-        sqr(maxNumber) < sqrtxmin -> 0
+    val sqrtXMin = pow(minNumber, 2.0) + pow(middleSide, 2.0)
+    return when {
+        sqr(maxNumber) == sqrtXMin -> 1
+        sqr(maxNumber) < sqrtXMin -> 0
         else -> 2
     }
-
 }
 
 /**
@@ -145,7 +141,7 @@ fun triangleKind(a: Double, b: Double, c: Double): Int {
  * Найти длину пересечения отрезков AB и CD.
  * Если пересечения нет, вернуть -1.
  */
-fun segmentLength(a: Int, b: Int, c: Int, d: Int): Int = when{
+fun segmentLength(a: Int, b: Int, c: Int, d: Int): Int = when {
     (b >= d) && (a <= d) && (a >= c) -> d - a
     (b >= d) && (a <= c) -> d - c
     (b <= d) && (b >= c) && (a >= c) -> b - a

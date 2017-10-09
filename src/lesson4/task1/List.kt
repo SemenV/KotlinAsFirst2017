@@ -1,7 +1,9 @@
 @file:Suppress("UNUSED_PARAMETER")
+
 package lesson4.task1
 
 import lesson1.task1.discriminant
+import lesson1.task1.sqr
 import java.lang.Math.*
 
 /**
@@ -109,11 +111,7 @@ fun buildSumExample(list: List<Int>) = list.joinToString(separator = " + ", post
  */
 fun abs(v: List<Double>): Double {
     var sum = 0.0
-    for (i in 0 until v.size){
-        var k = 2.0
-        sum += pow(v[i],k)
-        k++
-    }
+    for (i in 0 until v.size) sum += sqr(v[i])
     return sqrt(sum)
 }
 
@@ -137,9 +135,7 @@ fun mean(list: List<Double>): Double {
  */
 fun center(list: MutableList<Double>): MutableList<Double> {
     val average = mean(list)
-    for (i in 0 until list.size){
-        list[i] -= average
-    }
+    for (i in 0 until list.size) list[i] -= average
     return list
 }
 
@@ -153,9 +149,7 @@ fun center(list: MutableList<Double>): MutableList<Double> {
 fun times(a: List<Double>, b: List<Double>): Double {
     if ((a.isEmpty()) && (b.isEmpty())) return 0.0
     var sum = 0.0
-    for(element in 0 until a.size){
-        sum += a[element] * b[element]
-    }
+    for (element in 0 until a.size) sum += a[element] * b[element]
     return sum
 }
 
@@ -170,11 +164,8 @@ fun times(a: List<Double>, b: List<Double>): Double {
 fun polynom(p: List<Double>, x: Double): Double {
     if (p.isEmpty()) return 0.0
     var sum = 0.0
-    for(element in 0 until p.size){
-        sum += p[element] * pow(x,element.toDouble())
-    }
+    for (element in 0 until p.size) sum += p[element] * pow(x, element.toDouble())
     return sum
-
 }
 
 /**
@@ -189,13 +180,8 @@ fun polynom(p: List<Double>, x: Double): Double {
  */
 fun accumulate(list: MutableList<Double>): MutableList<Double> {
     if (list.isEmpty()) return list
-    var sum = list[0]
-    for (i in 1 until list.size){
-        sum += list[1]
-        list.add(sum)
-        list.removeAt(1)
-    }
-      return list
+    for (i in 1 until list.size) list[i] = list[i] + list[i - 1]
+    return list
 }
 
 /**
@@ -209,16 +195,15 @@ fun factorize(n: Int): List<Int> {
     var newn = n
     var a = mutableListOf<Int>()
     var number = 2
-    while (number <= newn){
-        if (newn % number == 0){
+    while (number <= newn) {
+        if (newn % number == 0) {
             a.add(number)
             newn /= number
             number--
-
         }
         number++
     }
-    return a.sorted().toList()
+    return a.toList()
 }
 
 /**
@@ -239,12 +224,12 @@ fun factorizeToString(n: Int): String = factorize(n).joinToString(separator = "*
 fun convert(n: Int, base: Int): List<Int> {
     var newn = n
     var a = mutableListOf<Int>()
-    do{
-        a.add(0,newn % base)
+    do {
+        a.add(newn % base)
         newn /= base
-    }while (newn >= base)
-    if (newn != 0)  a.add(0,newn)
-    return a.toList()
+    } while (newn >= base)
+    if (newn != 0) a.add(newn)
+    return a.asReversed().toList()
 }
 
 /**
@@ -256,7 +241,7 @@ fun convert(n: Int, base: Int): List<Int> {
  * Например: n = 100, base = 4 -> 1210, n = 250, base = 14 -> 13c
  */
 fun convertToString(n: Int, base: Int): String {
-    var converList = convert(n,base)
+    var converList = convert(n, base)
     var str = ""
     for (element in 0 until converList.size) {
         if (converList[element] > 9) str += '0' + converList[element] + 39
@@ -275,13 +260,14 @@ fun convertToString(n: Int, base: Int): String {
 fun decimal(digits: List<Int>, base: Int): Int {
     var sum = digits[digits.size - 1]
     var power = digits.size - 1
-    for (element in 0..digits.size - 2){
-        sum += digits[element] * powInt(base,power)
+    for (element in 0..digits.size - 2) {
+        sum += digits[element] * powInt(base, power)
         power--
     }
     return sum
 }
-fun powInt(a: Int, b: Int) = (pow(a.toDouble(),b.toDouble())).toInt()
+
+fun powInt(a: Int, b: Int) = (pow(a.toDouble(), b.toDouble())).toInt()
 
 /**
  * Сложная
@@ -294,11 +280,11 @@ fun powInt(a: Int, b: Int) = (pow(a.toDouble(),b.toDouble())).toInt()
  */
 fun decimalFromString(str: String, base: Int): Int {
     var a = mutableListOf<Int>()
-    for (i in 0 until str.length){
+    for (i in 0 until str.length) {
         a.add(str[i].toInt())
-        if (a[i] > 59) a[i] -= 87 else a[i] -=48
+        if (a[i] > 59) a[i] -= 87 else a[i] -= 48
     }
-    return decimal(a,base)
+    return decimal(a, base)
 }
 
 /**
@@ -312,10 +298,10 @@ fun decimalFromString(str: String, base: Int): Int {
 fun roman(n: Int): String {
     var str = ""
     var newn = n
-    var numbers = listOf(1000,900,500,400,100,90,50,40,10,9,5,4,1)
-    var simbols = listOf("M","CM","D","CD","C","XC","L","XL","X","IX","V","IV","I")
-    for(i in 0 until numbers.size){
-        while (newn >= numbers[i]){
+    var numbers = listOf(1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1)
+    var simbols = listOf("M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I")
+    for (i in 0 until numbers.size) {
+        while (newn >= numbers[i]) {
             str += simbols[i]
             newn -= numbers[i]
         }
@@ -333,48 +319,44 @@ fun roman(n: Int): String {
  */
 fun russian(n: Int): String {
     var str = ""
-    val firt3Number = hundred(n / 100000) + dozensAndUnits(n / 1000 % 100,1)
+    val firt3Number = hundred(n / 100000) + dozensAndUnits(n / 1000 % 100, 1)
     //собираем 1xx xxx, x11 xxx, xx1 xxx Причем x11 xxx, xx1 xxx - зависят друг от друга
     // с - расположение относительно первых xxx и последних xxx
-    val last3Number = hundred(n / 100 % 10) + dozensAndUnits(n % 100,2)
+    val last3Number = hundred(n / 100 % 10) + dozensAndUnits(n % 100, 2)
     //то же самое, только для последних 3ех элементов
-
     if (n / 1000 > 0) {
         if ((n / 1000 % 10 != 0) && (n / 10000 % 10 != 1))
-            str = firt3Number + tisa4i(n / 1000 % 10) + last3Number
+            str = firt3Number + thousands(n / 1000 % 10) + last3Number
         else
             str = firt3Number + " тысяч" + last3Number
-    }
-    else str = last3Number
-
+    } else str = last3Number
     return str.trim()
 }
-fun dozensAndUnits(b: Int,c: Int): String{
+
+fun dozensAndUnits(b: Int, c: Int): String {
     var str = ""
     val second = b / 10
     val thread = b % 10
-    return when{
-        (second ==1) && (thread == 0) -> str + " десять"
-        (second ==1) && (thread != 0) -> str + units_1_(thread)
-        (c == 2) && (thread == 1) -> str + dozens(second) +" один" //что бы не создавать новый units
-        (c == 2) && (thread == 2) -> str + dozens(second) +" два"
+    return when {
+        (second == 1) && (thread == 0) -> str + " десять"
+        (second == 1) && (thread != 0) -> str + units_1_(thread)
+        (c == 2) && (thread == 1) -> str + dozens(second) + " один" //что бы не создавать новый units
+        (c == 2) && (thread == 2) -> str + dozens(second) + " два"
         (second == 0) -> str + units(thread)
-        else -> str +dozens(second) + units(thread)
+        else -> str + dozens(second) + units(thread)
     }
 }
-fun units(a2: Int): String{
-    return when(a2){
-        1 -> " одна"
-        2 -> " две"
-        3 -> " три"
-        4 -> " четыре"
-        5 -> " пять"
-        6 -> " шесть"
-        7 -> " семь"
-        8 -> " восемь"
-        9 -> " девять"
-        else -> ""
-    }
+fun units(a2: Int): String = when (a2) {
+    1 -> " одна"
+    2 -> " две"
+    3 -> " три"
+    4 -> " четыре"
+    5 -> " пять"
+    6 -> " шесть"
+    7 -> " семь"
+    8 -> " восемь"
+    9 -> " девять"
+    else -> ""
 }
 fun dozens(b: Int): String = when (b) {
     2 -> " двадцать"
@@ -387,8 +369,7 @@ fun dozens(b: Int): String = when (b) {
     9 -> " девяносто"
     else -> ""
 }
-
-fun units_1_(a1: Int): String = when(a1){
+fun units_1_(a1: Int): String = when (a1) {
     1 -> " одиннадцать"
     2 -> " двенадцать"
     3 -> " тринадцать"
@@ -400,7 +381,7 @@ fun units_1_(a1: Int): String = when(a1){
     9 -> " девятнадцать"
     else -> ""
 }
-fun hundred(b: Int): String = when(b){
+fun hundred(b: Int): String = when (b) {
     1 -> " сто"
     2 -> " двести"
     3 -> " триста"
@@ -412,7 +393,7 @@ fun hundred(b: Int): String = when(b){
     9 -> " девятьсот"
     else -> ""
 }
-fun tisa4i(first: Int): String = when(first){
+fun thousands(first: Int): String = when (first) {
     1 -> " тысяча"
     2 -> " тысячи"
     3 -> " тысячи"

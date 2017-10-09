@@ -1,12 +1,13 @@
 @file:Suppress("UNUSED_PARAMETER")
+
 package lesson3.task1
 
 import lesson1.task1.sqr
 import java.util.*
 import java.lang.Math.*
 
-fun powInt(n: Int,x: Int): Int {
-    return (pow(n.toDouble(),x.toDouble())).toInt()
+fun powInt(n: Int, x: Int): Int {
+    return (pow(n.toDouble(), x.toDouble())).toInt()
 }
 
 
@@ -43,7 +44,7 @@ fun isPrime(n: Int): Boolean {
  */
 fun isPerfect(n: Int): Boolean {
     var sum = 1
-    for (m in 2..n/2) {
+    for (m in 2..n / 2) {
         if (n % m > 0) continue
         sum += m
         if (sum > n) break
@@ -60,7 +61,7 @@ fun digitCountInNumber(n: Int, m: Int): Int =
         when {
             n == m -> 1
             n < 10 -> 0
-            else -> digitCountInNumber(n / 10,m) + digitCountInNumber(n % 10,m)
+            else -> digitCountInNumber(n / 10, m) + digitCountInNumber(n % 10, m)
         }
 
 /**
@@ -70,13 +71,12 @@ fun digitCountInNumber(n: Int, m: Int): Int =
  * Например, число 1 содержит 1 цифру, 456 -- 3 цифры, 65536 -- 5 цифр.
  */
 fun digitNumber(n: Int): Int {
-    var r1: Int = n
+    var varN = n
     var i = 0
-    do{
+    do {
         i++
-        r1 /= 10
-
-    }while (r1 != 0)
+        varN /= 10
+    } while (varN != 0)
     return i
 }
 
@@ -89,13 +89,13 @@ fun digitNumber(n: Int): Int {
 fun fib(n: Int): Int {
     var last = 1
     var preLast = 1
-    for (i in 4..n){
+    for (i in 4..n) {
         var lastSave = last
         last += preLast
         preLast = lastSave
     }
-    if (n <= 2) return 1 else
-    return last + preLast
+    if (n <= 2) return 1
+    else return last + preLast
 }
 
 
@@ -109,13 +109,10 @@ fun lcm(m: Int, n: Int): Int {
     var newM = m
     var newN = n
     while (newM != newN) {
-        if (newM > newN) {
-            newM -= newN
-        } else {
-            newN -= newM
-        }
+        if (newM > newN) newM -= newN
+        else newN -= newM
     }
-    return m*n/ newM
+    return m * n / newM
 }
 
 /**
@@ -125,9 +122,7 @@ fun lcm(m: Int, n: Int): Int {
  */
 fun minDivisor(n: Int): Int {
     var del = 2
-    while (n % del > 0){
-        del++
-    }
+    while (n % del > 0) del++
     return del
 }
 
@@ -138,9 +133,11 @@ fun minDivisor(n: Int): Int {
  */
 fun maxDivisor(n: Int): Int {
     var del = 1
-    for (i in 1..(n / 2)){
-        if (n % i == 0) del = i
-    }
+    for (i in (n / 2) downTo 1)
+        if (n % i == 0) {
+            del = i
+            break
+         }
     return del
 }
 
@@ -152,23 +149,23 @@ fun maxDivisor(n: Int): Int {
  * Например, 25 и 49 взаимно простые, а 6 и 8 -- нет.
  */
 fun isCoPrime(m: Int, n: Int): Boolean {
-    for (i in 2..Math.max(m,n)){
+    for (i in 2..Math.max(m, n))
         if ((m % i == 0) && (n % i == 0)) return false
-    }
     return true
 }
 
 /**
  * Простая
  *
+ *
  * Для заданных чисел m и n, m <= n, определить, имеется ли хотя бы один точный квадрат между m и n,
  * то есть, существует ли такое целое k, что m <= k*k <= n.
  * Например, для интервала 21..28 21 <= 5*5 <= 28, а для интервала 51..61 квадрата не существует.
  */
 fun squareBetweenExists(m: Int, n: Int): Boolean {
-    for (i in 0..(min(m,n) + 1)){
+    for (i in 0..min(m, n)) {
         var iDouble = i.toDouble()
-        if (sqr(iDouble) in min(m,n)..max(m,n)) return true
+        if (sqr(iDouble) in min(m, n)..max(m, n)) return true
     }
     return false
 }
@@ -181,18 +178,15 @@ fun squareBetweenExists(m: Int, n: Int): Boolean {
  * Нужную точность считать достигнутой, если очередной член ряда меньше eps по модулю
  */
 fun sin(x: Double, eps: Double): Double {
-    var x1 = x
-    while (x1 > 2 * PI) x1 -= 2 * PI
-    while (x1 < 2 * PI) x1 += 2 * PI
-
-    var k = 1
+    var number = x % 2 * PI
+    var fact = 1
     var sign = 1
     var sum = 0.0
-    while (pow(x1,k.toDouble()) / factorial(k) >= eps){
-        var SeqMemb = sign * pow(x1,k.toDouble()) / factorial(k)
-        k += 2
-        sign *= -1
-        sum += SeqMemb
+    while (pow(number, fact.toDouble()) / factorial(fact) >= eps) {
+        var seqMemb = sign * pow(number, fact.toDouble()) / factorial(fact)
+        fact += 2
+        sign = -sign
+        sum += seqMemb
     }
     return sum
 }
@@ -205,18 +199,15 @@ fun sin(x: Double, eps: Double): Double {
  * Нужную точность считать достигнутой, если очередной член ряда меньше eps по модулю
  */
 fun cos(x: Double, eps: Double): Double {
-    var varx = x
-    while (varx > 2 * PI) varx -= 2 * PI
-    while (varx < 2 * PI) varx += 2 * PI
-
-    var k = 2
+    var number = x % 2 * PI
+    var fact = 2
     var sign = -1
     var sum = 1.0
-    while (pow(varx,k.toDouble()) / factorial(k) >= eps){
-        var SeqMemb = sign * pow(varx,k.toDouble()) / factorial(k)
-        k += 2
-        sign *= -1
-        sum += SeqMemb
+    while (pow(number, fact.toDouble()) / factorial(fact) >= eps) {
+        var seqMemb = sign * pow(number, fact.toDouble()) / factorial(fact)
+        fact += 2
+        sign = -sign
+        sum += seqMemb
     }
     return sum
 }
@@ -228,13 +219,13 @@ fun cos(x: Double, eps: Double): Double {
  * Не использовать строки при решении задачи.
  */
 fun revert(n: Int): Int {
-    var varn = n
-    var newn = 0
-    while (varn != 0){
-        newn = newn * 10 + varn % 10
-        varn /= 10
+    var lastN = n
+    var newN = 0
+    while (lastN != 0) {
+        newN = newN * 10 + lastN % 10
+        lastN /= 10
     }
-    return newn
+    return newN
 }
 
 /**
@@ -244,16 +235,7 @@ fun revert(n: Int): Int {
  * первая цифра равна последней, вторая -- предпоследней и так далее.
  * 15751 -- палиндром, 3653 -- нет.
  */
-fun isPalindrome(n: Int): Boolean {
-    var varn = n
-    var revertn = revert(varn)
-    while (revertn != 0){
-        if ((revertn % 10) != (varn % 10)) return false
-        revertn /= 10
-        varn /= 10
-    }
-    return true
-}
+fun isPalindrome(n: Int): Boolean = revert(n) == n
 
 
 /**
@@ -263,10 +245,11 @@ fun isPalindrome(n: Int): Boolean {
  * Например, 54 и 323 состоят из разных цифр, а 111 и 0 из одинаковых.
  */
 fun hasDifferentDigits(n: Int): Boolean {
-    var newn = n
-    while (newn != 0){
-       if (n % 10 != newn % 10) return true
-        newn /= 10
+    var newN = n
+    var lastNumber = n % 10
+    while (newN != 0) {
+        if (lastNumber != newN % 10) return true
+        newN /= 10
     }
     return false
 }
@@ -281,15 +264,14 @@ fun hasDifferentDigits(n: Int): Boolean {
 fun squareSequenceDigit(n: Int): Int {
     var number = 1
     var sizeNumbers = 0
-    var numberSquare = 0
-    while (sizeNumbers  < n){
-        numberSquare = number * number
-        sizeNumbers  += digitNumber(numberSquare)
-        number ++
+    while (sizeNumbers < n) {
+        sizeNumbers += digitNumber(number * number)
+        number++
     }
-
-    return numberSquare / (powInt(10,(sizeNumbers  - n))) % 10
+    val numberSquare = powInt((number - 1),2)
+    return numberSquare / (powInt(10, (sizeNumbers - n))) % 10
 }
+
 /**
  * Сложная
  *
