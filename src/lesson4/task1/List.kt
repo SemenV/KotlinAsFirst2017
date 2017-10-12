@@ -318,34 +318,36 @@ fun roman(n: Int): String {
  * 23964 = "двадцать три тысячи девятьсот шестьдесят четыре"
  */
 fun russian(n: Int): String {
-    var str = ""
-    val firt3Number = hundred(n / 100000) + dozensAndUnits(n / 1000 % 100, 1)
-    //собираем 1xx xxx, x11 xxx, xx1 xxx Причем x11 xxx, xx1 xxx - зависят друг от друга
-    // с - расположение относительно первых xxx и последних xxx
-    val last3Number = hundred(n / 100 % 10) + dozensAndUnits(n % 100, 2)
-    //то же самое, только для последних 3ех элементов
-    if (n / 1000 > 0) {
-        if ((n / 1000 % 10 != 0) && (n / 10000 % 10 != 1))
-            str = firt3Number + thousands(n / 1000 % 10) + last3Number
-        else
-            str = firt3Number + " тысяч" + last3Number
-    } else str = last3Number
-    return str.trim()
+    if (n / 1000 > 0) return (thousandsAll(n / 1000) + hundredAll(n % 1000)).trim()
+    return hundredAll(n % 1000).trim()
 }
 
-fun dozensAndUnits(b: Int, c: Int): String {
-    var str = ""
-    val second = b / 10
-    val thread = b % 10
+fun hundredAll(a: Int): String {
+    var str = hundred(a / 100)
+    val second = a / 10 % 10
+    val thread = a % 10
     return when {
         (second == 1) && (thread == 0) -> str + " десять"
         (second == 1) && (thread != 0) -> str + units_1_(thread)
-        (c == 2) && (thread == 1) -> str + dozens(second) + " один" //что бы не создавать новый units
-        (c == 2) && (thread == 2) -> str + dozens(second) + " два"
-        (second == 0) -> str + units(thread)
+        (thread == 1) -> str + dozens(second) + " один"
+        (thread == 2) -> str + dozens(second) + " два"
         else -> str + dozens(second) + units(thread)
     }
 }
+
+fun thousandsAll(a: Int): String {
+    var str = hundred(a / 100)
+    val second = a / 10 % 10
+    val thread = a % 10
+    return when {
+        (second == 1) && (thread == 0) -> str + " десять" + " тысяч"
+        (second == 1) && (thread != 0) -> str + units_1_(thread) + " тысяч"
+        (second == 0) -> str + units(thread) + thousands(thread)
+        else -> str + dozens(second) + units(thread) + thousands(thread)
+    }
+}
+
+
 fun units(a2: Int): String = when (a2) {
     1 -> " одна"
     2 -> " две"
@@ -358,6 +360,7 @@ fun units(a2: Int): String = when (a2) {
     9 -> " девять"
     else -> ""
 }
+
 fun dozens(b: Int): String = when (b) {
     2 -> " двадцать"
     3 -> " тридцать"
@@ -369,6 +372,7 @@ fun dozens(b: Int): String = when (b) {
     9 -> " девяносто"
     else -> ""
 }
+
 fun units_1_(a1: Int): String = when (a1) {
     1 -> " одиннадцать"
     2 -> " двенадцать"
@@ -381,6 +385,7 @@ fun units_1_(a1: Int): String = when (a1) {
     9 -> " девятнадцать"
     else -> ""
 }
+
 fun hundred(b: Int): String = when (b) {
     1 -> " сто"
     2 -> " двести"
@@ -393,6 +398,7 @@ fun hundred(b: Int): String = when (b) {
     9 -> " девятьсот"
     else -> ""
 }
+
 fun thousands(first: Int): String = when (first) {
     1 -> " тысяча"
     2 -> " тысячи"

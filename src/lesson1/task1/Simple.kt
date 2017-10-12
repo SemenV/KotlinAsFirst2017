@@ -1,4 +1,5 @@
 @file:Suppress("UNUSED_PARAMETER")
+
 package lesson1.task1
 
 import java.lang.Math.*
@@ -51,7 +52,7 @@ fun main(args: Array<String>) {
  * Пользователь задает время в часах, минутах и секундах, например, 8:20:35.
  * Рассчитать время в секундах, прошедшее с начала суток (30035 в данном случае).
  */
-fun seconds(hours: Int, minutes: Int, seconds: Int): Int = hours*3600+minutes*60+seconds;
+fun seconds(hours: Int, minutes: Int, seconds: Int): Int = hours * 3600 + minutes * 60 + seconds;
 
 /**
  * Тривиальная
@@ -60,7 +61,8 @@ fun seconds(hours: Int, minutes: Int, seconds: Int): Int = hours*3600+minutes*60
  * Определить длину того же отрезка в метрах (в данном случае 18.98).
  * 1 сажень = 3 аршина = 48 вершков, 1 вершок = 4.445 см.
  */
-fun lengthInMeters(sagenes: Int, arshins: Int, vershoks: Int): Double = (sagenes*48+arshins*48/3+vershoks)*4.445/100;
+fun lengthInMeters(sagenes: Int, arshins: Int, vershoks: Int): Double
+        = (sagenes * 48 + arshins * 48 / 3 + vershoks) * 4.445 / 100;
 
 /**
  * Тривиальная
@@ -68,7 +70,7 @@ fun lengthInMeters(sagenes: Int, arshins: Int, vershoks: Int): Double = (sagenes
  * Пользователь задает угол в градусах, минутах и секундах (например, 36 градусов 14 минут 35 секунд).
  * Вывести значение того же угла в радианах (например, 0.63256).
  */
-fun angleInRadian(grad: Int, min: Int, sec: Int): Double = ((grad+min / 60.0 + sec / 3600.0) * PI) / 180.0
+fun angleInRadian(grad: Int, min: Int, sec: Int): Double = ((grad + min / 60.0 + sec / 3600.0) * PI) / 180.0
 
 /**
  * Тривиальная
@@ -104,7 +106,7 @@ fun travelMinutes(hoursDepart: Int, minutesDepart: Int, hoursArrive: Int, minute
  * Например, 100 рублей под 10% годовых превратятся в 133.1 рубля
  */
 fun accountInThreeYears(initial: Int, percent: Int): Double
-        = initial * (pow((1 + percent / 100.0),3.0))
+        = initial * (pow((1 + percent / 100.0), 3.0))
 
 /**
  * Простая
