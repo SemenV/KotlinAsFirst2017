@@ -240,14 +240,14 @@ fun convert(n: Int, base: Int): List<Int> {
  * строчными буквами: 10 -> a, 11 -> b, 12 -> c и так далее.
  * Например: n = 100, base = 4 -> 1210, n = 250, base = 14 -> 13c
  */
-fun convertToString(n: Int, base: Int): String {
+fun convertToString(n: Int, base: Int): String { //переделаю позже
     var converList = convert(n, base)
-    var str = ""
+    var str = StringBuilder()
     for (element in 0 until converList.size) {
-        if (converList[element] > 9) str += '0' + converList[element] + 39
-        else str += '0' + converList[element]
+        if (converList[element] > 9) str.append(converList)
+        else str.append(converList
     }
-    return str
+    return str.toString()
 }
 
 /**
