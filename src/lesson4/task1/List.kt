@@ -348,7 +348,7 @@ fun thousandsAll(a: Int): String {
 }
 
 
-fun units(a2: Int): String = when (a2) {
+fun units(a: Int): String = when (a) {
     1 -> " одна"
     2 -> " две"
     3 -> " три"
@@ -361,7 +361,7 @@ fun units(a2: Int): String = when (a2) {
     else -> ""
 }
 
-fun dozens(b: Int): String = when (b) {
+fun dozens(a: Int): String = when (a) {
     2 -> " двадцать"
     3 -> " тридцать"
     4 -> " сорок"
@@ -373,7 +373,7 @@ fun dozens(b: Int): String = when (b) {
     else -> ""
 }
 
-fun units_1_(a1: Int): String = when (a1) {
+fun units_1_(a: Int): String = when (a) {
     1 -> " одиннадцать"
     2 -> " двенадцать"
     3 -> " тринадцать"
@@ -386,7 +386,7 @@ fun units_1_(a1: Int): String = when (a1) {
     else -> ""
 }
 
-fun hundred(b: Int): String = when (b) {
+fun hundred(a: Int): String = when (a) {
     1 -> " сто"
     2 -> " двести"
     3 -> " триста"
@@ -399,7 +399,7 @@ fun hundred(b: Int): String = when (b) {
     else -> ""
 }
 
-fun thousands(first: Int): String = when (first) {
+fun thousands(a: Int): String = when (a) {
     1 -> " тысяча"
     2 -> " тысячи"
     3 -> " тысячи"
