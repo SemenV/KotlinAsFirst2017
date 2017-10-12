@@ -1,4 +1,5 @@
 @file:Suppress("UNUSED_PARAMETER")
+
 package lesson5.task1
 
 import java.text.SimpleDateFormat
@@ -13,11 +14,11 @@ import java.util.*
 fun timeStrToSeconds(str: String): Int {
     val parts = str.split(":")
     var result = 0
-        for (part in parts) {
-            val number = part.toInt()
-            result = result * 60 + number
-        }
-        return result
+    for (part in parts) {
+        val number = part.toInt()
+        result = result * 60 + number
+    }
+    return result
 }
 
 /**
@@ -51,12 +52,10 @@ fun main(args: Array<String>) {
         val seconds = timeStrToSeconds(line)
         if (seconds == -1) {
             println("Введённая строка $line не соответствует формату ЧЧ:ММ:СС")
-        }
-        else {
+        } else {
             println("Прошло секунд с начала суток: $seconds")
         }
-    }
-    else {
+    } else {
         println("Достигнут <конец файла> в процессе чтения строки. Программа прервана")
     }
 }
@@ -70,26 +69,29 @@ fun main(args: Array<String>) {
  * При неверном формате входной строки вернуть пустую строку
  */
 fun dateStrToDigit(str: String): String {
-    var partsLine = str.split(" ").toMutableList()
-    if (partsLine.size < 3) return ""
-    partsLine[1] = strMonthToInt(partsLine[1])
-    for (i in 0 until partsLine.size) if (partsLine[i] == "") return ""
-    return String.format("%02d.%02d.%d",partsLine[0].toInt(),partsLine[1].toInt(),partsLine[2].toInt())
+    try {
+        var partsLine = str.split(" ")
+        var month = strMonthToInt(partsLine[1])
+        return String.format("%02d.%02d.%d", partsLine[0].toInt(), month, partsLine[2].toInt())
+    } catch (e: Exception) {
+        return ""
+    }
 }
-fun strMonthToInt(strMonth: String): String = when(strMonth){
-    "января" -> "01"
-    "февраля" -> "02"
-    "марта" -> "03"
-    "апреля" -> "04"
-    "мая" -> "05"
-    "июня" -> "06"
-    "июля" -> "07"
-    "августа" -> "08"
-    "сентября" -> "09"
-    "октября" -> "10"
-    "ноября" -> "11"
-    "декабря" -> "12"
-    else -> ""
+
+fun strMonthToInt(strMonth: String): Int = when (strMonth) {
+    "января" -> 1
+    "февраля" -> 2
+    "марта" -> 3
+    "апреля" -> 4
+    "мая" -> 5
+    "июня" -> 6
+    "июля" -> 7
+    "августа" -> 8
+    "сентября" -> 9
+    "октября" -> 10
+    "ноября" -> 11
+    "декабря" -> 12
+    else -> throw Exception("$strMonth")
 }
 
 /**
@@ -99,7 +101,32 @@ fun strMonthToInt(strMonth: String): String = when(strMonth){
  * Перевести её в строковый формат вида "15 июля 2016".
  * При неверном формате входной строки вернуть пустую строку
  */
-fun dateDigitToStr(digital: String): String = TODO()
+fun dateDigitToStr(digital: String): String { //здесь тоже переделать?
+    try {
+        var partsLine = digital.split(".")
+        if (partsLine.size != 3) return ""
+        var month = revertStrMonthToInt(partsLine[1])
+        return String.format("%d %s %d", partsLine[0].toInt(), month, partsLine[2].toInt())
+    } catch (e: Exception) {
+        return ""
+    }
+}
+
+fun revertStrMonthToInt(strMonth: String): String = when (strMonth) {
+    "01" -> "января"
+    "02" -> "февраля"
+    "03" -> "марта"
+    "04" -> "апреля"
+    "05" -> "мая"
+    "06" -> "июня"
+    "07" -> "июля"
+    "08" -> "августа"
+    "09" -> "сентября"
+    "10" -> "октября"
+    "11" -> "ноября"
+    "12" -> "декабря"
+    else -> throw Exception()
+}
 
 /**
  * Средняя
@@ -113,7 +140,10 @@ fun dateDigitToStr(digital: String): String = TODO()
  * Все символы в номере, кроме цифр, пробелов и +-(), считать недопустимыми.
  * При неверном формате вернуть пустую строку
  */
-fun flattenPhoneNumber(phone: String): String = TODO()
+fun flattenPhoneNumber(phone: String): String {
+    if (phone.contains(Regex("""[^\+\d \(\)-]"""))) return ""
+    return phone.replace(Regex("""[^\+\d]"""), "")
+}
 
 /**
  * Средняя
@@ -125,7 +155,14 @@ fun flattenPhoneNumber(phone: String): String = TODO()
  * Прочитать строку и вернуть максимальное присутствующее в ней число (717 в примере).
  * При нарушении формата входной строки или при отсутствии в ней чисел, вернуть -1.
  */
-fun bestLongJump(jumps: String): Int = TODO()
+fun bestLongJump(jumps: String): Int {
+    if (jumps.contains(Regex("""[^\d \%-]"""))) return -1
+    val partsLine = jumps.split(" ")
+    var max = -1
+    for (i in 0 until partsLine.size)
+        if ((partsLine[i].contains(Regex("""\d"""))) && (max < partsLine[i].toInt())) max = partsLine[i].toInt()
+    return max
+}
 
 /**
  * Сложная

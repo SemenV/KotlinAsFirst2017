@@ -240,12 +240,12 @@ fun convert(n: Int, base: Int): List<Int> {
  * строчными буквами: 10 -> a, 11 -> b, 12 -> c и так далее.
  * Например: n = 100, base = 4 -> 1210, n = 250, base = 14 -> 13c
  */
-fun convertToString(n: Int, base: Int): String { //переделаю позже
+fun convertToString(n: Int, base: Int): String {
     var converList = convert(n, base)
     var str = StringBuilder()
     for (element in 0 until converList.size) {
-        if (converList[element] > 9) str.append(converList)
-        else str.append(converList
+        if (converList[element] > 9) str.append((converList[element] + 87).toChar())
+        else str.append(converList[element])
     }
     return str.toString()
 }
@@ -282,7 +282,8 @@ fun decimalFromString(str: String, base: Int): Int {
     var a = mutableListOf<Int>()
     for (i in 0 until str.length) {
         a.add(str[i].toInt())
-        if (a[i] > 59) a[i] -= 87 else a[i] -= 48
+        if (a[i] > 59) a[i] -= 87
+        else a[i] -= 48
     }
     return decimal(a, base)
 }
@@ -318,7 +319,7 @@ fun roman(n: Int): String {
  * 23964 = "двадцать три тысячи девятьсот шестьдесят четыре"
  */
 fun russian(n: Int): String {
-    if (n / 1000 > 0) return (thousandsAll(n / 1000) + hundredAll(n % 1000)).trim()
+    if (n / 1000 > 0) return (thousandAll(n / 1000) + hundredAll(n % 1000)).trim()
     return hundredAll(n % 1000).trim()
 }
 
@@ -335,15 +336,15 @@ fun hundredAll(a: Int): String {
     }
 }
 
-fun thousandsAll(a: Int): String {
+fun thousandAll(a: Int): String {
     var str = hundred(a / 100)
     val second = a / 10 % 10
     val thread = a % 10
     return when {
         (second == 1) && (thread == 0) -> str + " десять" + " тысяч"
         (second == 1) && (thread != 0) -> str + units_1_(thread) + " тысяч"
-        (second == 0) -> str + units(thread) + thousands(thread)
-        else -> str + dozens(second) + units(thread) + thousands(thread)
+        (second == 0) -> str + units(thread) + thousand(thread)
+        else -> str + dozens(second) + units(thread) + thousand(thread)
     }
 }
 
@@ -399,7 +400,7 @@ fun hundred(a: Int): String = when (a) {
     else -> ""
 }
 
-fun thousands(a: Int): String = when (a) {
+fun thousand(a: Int): String = when (a) {
     1 -> " тысяча"
     2 -> " тысячи"
     3 -> " тысячи"
