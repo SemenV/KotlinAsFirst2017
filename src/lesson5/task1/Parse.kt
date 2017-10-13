@@ -180,7 +180,7 @@ fun bestHighJump(jumps: String): Int {
     str = str.replace(Regex("""%"""), "")
     var list = str.split(" ")
     var max = -1
-    for (i in 1 until list.size){
+    for (i in 1 until list.size) {
         if ((list[i] == "+") && (list[i - 1].toInt() > max)) max = list[i - 1].toInt()
     }
     return max
@@ -196,15 +196,19 @@ fun bestHighJump(jumps: String): Int {
  * Про нарушении формата входной строки бросить исключение IllegalArgumentException
  */
 fun plusMinus(expression: String): Int {
-    var str = expression.split(" ")
-    var sum = str[0].toInt()
-    for (i in 0 until str.size) {
-        when (str[i]) {
-            "+" -> sum += str[i + 1].toInt()
-            "-" -> sum -= str[i + 1].toInt()
+    try {
+        var str = expression.split(" ")
+        var sum = str[0].toInt()
+        for (i in 0 until str.size) {
+            when (str[i]) {
+                "+" -> sum += str[i + 1].toInt()
+                "-" -> sum -= str[i + 1].toInt()
+            }
         }
+        return sum
+    } catch (e: IllegalArgumentException) {
+        throw IllegalArgumentException()
     }
-    return sum
 }
 
 /**
@@ -216,7 +220,15 @@ fun plusMinus(expression: String): Int {
  * Вернуть индекс начала первого повторяющегося слова, или -1, если повторов нет.
  * Пример: "Он пошёл в в школу" => результат 9 (индекс первого 'в')
  */
-fun firstDuplicateIndex(str: String): Int = TODO()
+fun firstDuplicateIndex(str: String): Int {
+    var vocList = str.toLowerCase().split(" ")
+    var vocLeanth = 0
+    for (i in 0 until vocList.size - 1) {
+        vocLeanth += vocList[i].length
+        if ((vocList[i]) == vocList[i + 1]) return vocLeanth - vocList[i].length + i
+    }
+    return -1
+}
 
 /**
  * Сложная
