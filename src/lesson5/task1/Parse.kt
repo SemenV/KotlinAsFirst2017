@@ -176,13 +176,13 @@ fun bestLongJump(jumps: String): Int {
  */
 fun bestHighJump(jumps: String): Int {
     var str = jumps
-    if (jumps.contains(Regex("""[^\d \%\+-]"""))) return -1
-    str = str.replace(Regex("""%| """), "")
-    str = str.replace(Regex("""[\d]{3}+(?![+\d])|-"""), "")
-    var list = str.split("+")
+    if (jumps.contains(Regex("""[^\d \%\+\-]"""))) return -1
+    str = str.replace(Regex("""%"""), "")
+    var list = str.split(" ")
     var max = -1
-    for (i in 0 until list.size - 1)
-        if (list[i].toInt() > max) max = list[i].toInt()
+    for (i in 1 until list.size){
+        if ((list[i] == "+") && (list[i - 1].toInt() > max)) max = list[i - 1].toInt()
+    }
     return max
 }
 
