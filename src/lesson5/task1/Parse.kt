@@ -321,3 +321,14 @@ fun fromRoman(roman: String): Int {
  *
  */
 fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> = TODO()
+/* {
+    var cellsList = mutableListOf<Int>()
+    for (i in 0 until cells) cellsList[i] = 0
+    var element = cells / 2
+    when(commands[element]){
+        '>' -> {
+
+        }
+    }
+}
+*/
