@@ -222,10 +222,10 @@ fun plusMinus(expression: String): Int {
  */
 fun firstDuplicateIndex(str: String): Int {
     var vocList = str.toLowerCase().split(" ")
-    var vocLeanth = 0
+    var vocLenght = 0
     for (i in 0 until vocList.size - 1) {
-        vocLeanth += vocList[i].length
-        if ((vocList[i]) == vocList[i + 1]) return vocLeanth - vocList[i].length + i
+        vocLenght += vocList[i].length
+        if ((vocList[i]) == vocList[i + 1]) return vocLenght - vocList[i].length + i
     }
     return -1
 }
@@ -241,7 +241,21 @@ fun firstDuplicateIndex(str: String): Int {
  * или пустую строку при нарушении формата строки.
  * Все цены должны быть положительными
  */
-fun mostExpensive(description: String): String = TODO()
+fun mostExpensive(description: String): String {
+    try {
+        var feedList = description.split(Regex(""" |; """))
+        var max = 0.0
+        var element = 0
+        for (i in 1..feedList.size step 2)
+            if (max < feedList[i].toDouble()) {
+                max = feedList[i].toDouble()
+                element = i - 1
+            }
+        return feedList[element]
+    } catch (e: Exception) {
+        return ""
+    }
+}
 
 /**
  * Сложная
@@ -254,7 +268,21 @@ fun mostExpensive(description: String): String = TODO()
  *
  * Вернуть -1, если roman не является корректным римским числом
  */
-fun fromRoman(roman: String): Int = TODO()
+fun fromRoman(roman: String): Int {
+    var rom = roman
+    val simbols = listOf("CM", "CD", "XC", "XL", "IX", "IV", "M", "D", "C", "L", "X", "V", "I")
+    val numbers = listOf(900, 400, 90, 40, 9, 4, 1000, 500, 100, 50, 10, 5, 1)
+    var sum = 0
+    var i = 0
+    while ((rom != "") && (i <= 12)) {
+        var simbolRom = simbols[i]
+        sum += Regex("""$simbolRom""").findAll(rom, 0).count() * numbers[i]
+        rom = rom.replace(Regex("""$simbolRom"""), "")
+        i++
+    }
+    if (rom.isNotEmpty()) return -1
+    return sum
+}
 
 /**
  * Очень сложная
