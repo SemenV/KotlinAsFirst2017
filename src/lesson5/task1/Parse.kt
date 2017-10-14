@@ -274,6 +274,7 @@ fun fromRoman(roman: String): Int {
     val numbers = listOf(900, 400, 90, 40, 9, 4, 1000, 500, 100, 50, 10, 5, 1)
     var sum = 0
     var i = 0
+    if (roman.isEmpty()) return -1
     while ((rom != "") && (i <= 12)) {
         var simbolRom = simbols[i]
         sum += Regex("""$simbolRom""").findAll(rom, 0).count() * numbers[i]

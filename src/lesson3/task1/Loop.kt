@@ -178,9 +178,9 @@ fun squareBetweenExists(m: Int, n: Int): Boolean {
  * Нужную точность считать достигнутой, если очередной член ряда меньше eps по модулю
  */
 fun sin(x: Double, eps: Double): Double {
-    var number = x
+    var number = x % (2 * PI)
     var fact = 1
-    var sign = -1
+    var sign = 1
     var sum = 0.0
     while (pow(number, fact.toDouble()) / factorial(fact) >= eps) {
         var seqMemb = sign * pow(number, fact.toDouble()) / factorial(fact)
