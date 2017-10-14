@@ -137,7 +137,7 @@ fun maxDivisor(n: Int): Int {
         if (n % i == 0) {
             del = i
             break
-         }
+        }
     return del
 }
 
@@ -179,6 +179,7 @@ fun squareBetweenExists(m: Int, n: Int): Boolean {
  */
 fun sin(x: Double, eps: Double): Double {
     var number = x % (2 * PI)
+    println(number)
     var fact = 1
     var sign = 1
     var sum = 0.0
@@ -199,7 +200,7 @@ fun sin(x: Double, eps: Double): Double {
  * Нужную точность считать достигнутой, если очередной член ряда меньше eps по модулю
  */
 fun cos(x: Double, eps: Double): Double {
-    var number = x % (2 * PI)
+    var number = x
     var fact = 2
     var sign = -1
     var sum = 1.0
@@ -268,7 +269,7 @@ fun squareSequenceDigit(n: Int): Int {
         sizeNumbers += digitNumber(number * number)
         number++
     }
-    val numberSquare = powInt((number - 1),2)
+    val numberSquare = powInt((number - 1), 2)
     return numberSquare / (powInt(10, (sizeNumbers - n))) % 10
 }
 

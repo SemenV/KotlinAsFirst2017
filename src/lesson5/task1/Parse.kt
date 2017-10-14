@@ -141,7 +141,7 @@ fun revertStrMonthToInt(strMonth: String): String = when (strMonth) {
  * При неверном формате вернуть пустую строку
  */
 fun flattenPhoneNumber(phone: String): String {
-    if (phone.contains(Regex("""[^\+\d \(\)-]"""))) return ""
+    if (phone.contains(Regex("""[^\+\d \(\)-]""")) || (!phone.contains(Regex("""\d""")))) return ""
     return phone.replace(Regex("""[^\+\d]"""), "")
 }
 
