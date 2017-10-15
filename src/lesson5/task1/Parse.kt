@@ -331,6 +331,7 @@ fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> {
     val basicCommands = "><-+ "
     var openBracket = 0
     while (numberOfCommand < commands.length) {
+        println("] $numberOfCommand $numberList")
         if (basicCommands.contains(commands[numberOfCommand])) {
             when (commands[numberOfCommand]) {
                 '>' -> numberList++
@@ -339,21 +340,17 @@ fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> {
                 '+' -> cellsList[numberList]++
                 ' ' -> ""
             }
-            println("$numberOfCommand $numberList")
             numberOfCommand++
         } else {
             when (commands[numberOfCommand]) {
                 '[' -> {
-                    println("[ $numberOfCommand $numberList")
-                    if (cellsList[numberList] == 0) {
-                        numberOfCommand = findEndBacket(commands, numberOfCommand)
-                    } else numberOfCommand++
-
+                    if (cellsList[numberList] == 0) numberOfCommand = findEndBacket(commands, numberOfCommand)
+                    else numberOfCommand++
                 }
                 ']' -> {
                     if (cellsList[numberList] == 0) numberOfCommand++
                     else numberOfCommand = findStartBacket(commands, numberOfCommand) + 1
-                    println("] $numberOfCommand $numberList")
+
 
                 }
             }
