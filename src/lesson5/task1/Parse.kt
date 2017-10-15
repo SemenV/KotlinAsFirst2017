@@ -298,14 +298,9 @@ fun fromRoman(roman: String): Int {
  *	- - уменьшение значения в ячейке под датчиком на 1 ед.;
  *	[ - если значение под датчиком равно 0, в качестве следующей команды следует воспринимать
  *  	не следующую по порядку, а идущую за соответствующей следующей командой ']' (с учётом вложенности);
- *   0 -> ]
- *  !0 -> след
  *	] - если значение под датчиком не равно 0, в качестве следующей команды следует воспринимать
  *  	не следующую по порядку, а идущую за соответствующей предыдущей командой '[' (с учётом вложенности);
  *      (комбинация [] имитирует цикл)
- *   0 -> след
- *  !0 -> [+1
- *      "<<<<< + >>>>>>>>>> --21[<-] >+28[>+] >++36[--<<42[<] >+[>+] >++]"
  *  пробел - пустая команда
  *
  * Изначально все ячейки заполнены значением 0 и датчик стоит на ячейке с номером N/2 (округлять вниз)
@@ -327,7 +322,7 @@ fun fromRoman(roman: String): Int {
  *
  */
 fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> {
-    //пока не работает, но буду рад если поможете найти ошибку ^^ (не работают вложенные, к limit еще не риступал)
+    //не работает пока. ыходит за приделы массива для последнего теста imit 1000
     if (commands.contains(Regex("""[^\[\]\+\->< ]"""))) throw IllegalArgumentException()
     var cellsList = mutableListOf<Int>()
     for (i in 0 until cells) cellsList.add(0)
@@ -345,27 +340,25 @@ fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> {
                 ' ' -> ""
             }
             println("$numberOfCommand $numberList")
-            println(cellsList)
             numberOfCommand++
         } else {
             when (commands[numberOfCommand]) {
                 '[' -> {
                     println("[ $numberOfCommand $numberList")
-                    openBracket = findStartBacket(commands, numberOfCommand) + 1
                     if (cellsList[numberList] == 0) {
                         numberOfCommand = findEndBacket(commands, numberOfCommand)
                     } else numberOfCommand++
-                    println(cellsList)
+
                 }
                 ']' -> {
                     if (cellsList[numberList] == 0) numberOfCommand++
-                    else numberOfCommand = openBracket
-                    //println(numberOfCommand)
+                    else numberOfCommand = findStartBacket(commands, numberOfCommand) + 1
                     println("] $numberOfCommand $numberList")
-                    println(cellsList)
+
                 }
             }
         }
+        println(cellsList)
     }
     return cellsList.toList()
 }
@@ -379,6 +372,7 @@ fun findEndBacket(str: String, startIndex: Int): Int {
     }
     throw IllegalArgumentException()
 }
+
 fun findStartBacket(str: String, startIndex: Int): Int {
     for (i in startIndex downTo 0) {
         var count = 0
