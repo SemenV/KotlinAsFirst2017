@@ -200,7 +200,7 @@ fun sin(x: Double, eps: Double): Double {
  * Нужную точность считать достигнутой, если очередной член ряда меньше eps по модулю
  */
 fun cos(x: Double, eps: Double): Double {
-    var number = x
+    var number = x % (2 * PI)
     var fact = 2
     var sign = -1
     var sum = 1.0
