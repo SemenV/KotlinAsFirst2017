@@ -327,7 +327,7 @@ fun fromRoman(roman: String): Int {
  *
  */
 fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> {
-    //не работает пока
+    //пока не работает, но буду рад если поможете найти ошибку ^^ (не работают вложенные, к limit еще не риступал)
     if (commands.contains(Regex("""[^\[\]\+\->< ]"""))) throw IllegalArgumentException()
     var cellsList = mutableListOf<Int>()
     for (i in 0 until cells) cellsList.add(0)
