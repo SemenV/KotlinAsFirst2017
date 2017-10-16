@@ -323,46 +323,43 @@ fun fromRoman(roman: String): Int {
  */
 fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> {
     //самый последний тест с limit = 256 не проходит, не знаю в чем дело, сил нет
-    try {
-        if (commands.contains(Regex("""[^\[\]\+\->< ]"""))) throw IllegalArgumentException()
-        var cellsList = mutableListOf<Int>()
-        for (i in 0 until cells) cellsList.add(0)
-        var numberList = cells / 2
-        var limitCount = 0
-        var numberOfCommand = 0
-        val basicCommands = "><-+ "
-        while ((numberOfCommand < commands.length) && (limitCount < limit)) {
-            //println(" $numberOfCommand $numberList") //все println исключительно для поиска ошибки
-            if (basicCommands.contains(commands[numberOfCommand])) {
-                when (commands[numberOfCommand]) {
-                    '>' -> numberList++
-                    '<' -> numberList--
-                    '-' -> cellsList[numberList]--
-                    '+' -> cellsList[numberList]++
-                    ' ' -> ""
+    if (commands.contains(Regex("""[^\[\]\+\->< ]"""))) throw IllegalArgumentException()
+    var cellsList = mutableListOf<Int>()
+    for (i in 0 until cells) cellsList.add(0)
+    var numberList = cells / 2
+    var limitCount = 0
+    var numberOfCommand = 0
+    val basicCommands = "><-+ "
+    while ((numberOfCommand < commands.length) && (limitCount < limit)) {
+        //println(" $numberOfCommand $numberList") //все println исключительно для поиска ошибки
+        if (basicCommands.contains(commands[numberOfCommand])) {
+            when (commands[numberOfCommand]) {
+                '>' -> numberList++
+                '<' -> numberList--
+                '-' -> cellsList[numberList]--
+                '+' -> cellsList[numberList]++
+                ' ' -> ""
+            }
+            numberOfCommand++
+        } else {
+            when (commands[numberOfCommand]) {
+                '[' -> {
+                    if (cellsList[numberList] == 0) numberOfCommand = findEndBacket(commands, numberOfCommand)
+                    else numberOfCommand++
+                    //println("[====")
                 }
-                numberOfCommand++
-            } else {
-                when (commands[numberOfCommand]) {
-                    '[' -> {
-                        if (cellsList[numberList] == 0) numberOfCommand = findEndBacket(commands, numberOfCommand)
-                        else numberOfCommand++
-                        //println("[====")
-                    }
-                    ']' -> {
-                        if (cellsList[numberList] == 0) numberOfCommand++
-                        else numberOfCommand = findStartBacket(commands, numberOfCommand) + 1
-                        //println("====]")
-                    }
+                ']' -> {
+                    if (cellsList[numberList] == 0) numberOfCommand++
+                    else numberOfCommand = findStartBacket(commands, numberOfCommand) + 1
+                    //println("====]")
                 }
             }
-            limitCount++
-            //println(cellsList)
         }
-        return cellsList.toList()
-    } catch (e: IllegalStateException) {
-        throw IllegalStateException()
+        limitCount++
+        if ((numberList > cells - 1) || (numberList < 0)) throw IllegalStateException()
+        //println(cellsList)
     }
+    return cellsList.toList()
 }
 
 fun findEndBacket(str: String, startIndex: Int): Int {
