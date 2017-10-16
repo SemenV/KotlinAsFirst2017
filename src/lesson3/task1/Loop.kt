@@ -179,11 +179,10 @@ fun squareBetweenExists(m: Int, n: Int): Boolean {
  */
 fun sin(x: Double, eps: Double): Double {
     var number = x % (2 * PI)
-    println(number)
     var fact = 1
     var sign = 1
     var sum = 0.0
-    while (pow(number, fact.toDouble()) / factorial(fact) >= eps) {
+    while (abs(pow(number, fact.toDouble())) / factorial(fact) >= eps) {
         var seqMemb = sign * pow(number, fact.toDouble()) / factorial(fact)
         fact += 2
         sign = -sign
