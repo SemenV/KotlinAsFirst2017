@@ -322,60 +322,69 @@ fun fromRoman(roman: String): Int {
  *
  */
 fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> {
-    //не работает пока. ыходит за приделы массива для последнего теста imit 1000
-    if (commands.contains(Regex("""[^\[\]\+\->< ]"""))) throw IllegalArgumentException()
-    var cellsList = mutableListOf<Int>()
-    for (i in 0 until cells) cellsList.add(0)
-    var numberList = cells / 2
-    var numberOfCommand = 0
-    val basicCommands = "><-+ "
-    var openBracket = 0
-    while (numberOfCommand < commands.length) {
-        println("] $numberOfCommand $numberList")
-        if (basicCommands.contains(commands[numberOfCommand])) {
-            when (commands[numberOfCommand]) {
-                '>' -> numberList++
-                '<' -> numberList--
-                '-' -> cellsList[numberList]--
-                '+' -> cellsList[numberList]++
-                ' ' -> ""
-            }
-            numberOfCommand++
-        } else {
-            when (commands[numberOfCommand]) {
-                '[' -> {
-                    if (cellsList[numberList] == 0) numberOfCommand = findEndBacket(commands, numberOfCommand)
-                    else numberOfCommand++
+    //самый последний тест с limit = 256 не проходит, не знаю в чем дело, сил нет
+    try {
+        if (commands.contains(Regex("""[^\[\]\+\->< ]"""))) throw IllegalArgumentException()
+        var cellsList = mutableListOf<Int>()
+        for (i in 0 until cells) cellsList.add(0)
+        var numberList = cells / 2
+        var limitCount = 0
+        var numberOfCommand = 0
+        val basicCommands = "><-+ "
+        while ((numberOfCommand < commands.length) && (limitCount < limit)) {
+            //println(" $numberOfCommand $numberList") //все println исключительно для поиска ошибки
+            if (basicCommands.contains(commands[numberOfCommand])) {
+                when (commands[numberOfCommand]) {
+                    '>' -> numberList++
+                    '<' -> numberList--
+                    '-' -> cellsList[numberList]--
+                    '+' -> cellsList[numberList]++
+                    ' ' -> ""
                 }
-                ']' -> {
-                    if (cellsList[numberList] == 0) numberOfCommand++
-                    else numberOfCommand = findStartBacket(commands, numberOfCommand) + 1
-
-
+                numberOfCommand++
+            } else {
+                when (commands[numberOfCommand]) {
+                    '[' -> {
+                        if (cellsList[numberList] == 0) numberOfCommand = findEndBacket(commands, numberOfCommand)
+                        else numberOfCommand++
+                        //println("[====")
+                    }
+                    ']' -> {
+                        if (cellsList[numberList] == 0) numberOfCommand++
+                        else numberOfCommand = findStartBacket(commands, numberOfCommand) + 1
+                        //println("====]")
+                    }
                 }
             }
+            limitCount++
+            //println(cellsList)
         }
-        println(cellsList)
+        return cellsList.toList()
+    } catch (e: IllegalStateException) {
+        throw IllegalStateException()
     }
-    return cellsList.toList()
 }
 
 fun findEndBacket(str: String, startIndex: Int): Int {
-    for (i in startIndex until str.length) {
-        var count = 0
+    var count = 1
+    var i = startIndex + 1
+    while (count != 0) {
         if (str[i] == '[') count++
-        if ((str[i] == ']') && (count == 0)) return i
         if (str[i] == ']') count--
+        i++
+        if (i > str.length) throw IllegalArgumentException()
     }
-    throw IllegalArgumentException()
+    return i
 }
 
 fun findStartBacket(str: String, startIndex: Int): Int {
-    for (i in startIndex downTo 0) {
-        var count = 0
+    var count = 1
+    var i = startIndex - 1
+    while (count != 0) {
         if (str[i] == ']') count++
-        if ((str[i] == '[') && (count == 0)) return i
-        if (str[i] == ']') count--
+        if (str[i] == '[') count--
+        i--
+        if (i < 0) throw IllegalArgumentException()
     }
-    throw IllegalArgumentException()
+    return i
 }
