@@ -323,8 +323,13 @@ fun fromRoman(roman: String): Int {
  */
 fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> {
     if (commands.contains(Regex("""[^\[\]\+\->< ]"""))) throw IllegalArgumentException()
-    if (Regex("""\[""").findAll(commands, 0).count() != Regex("""\]""").findAll(commands, 0).count())
-        throw throw IllegalArgumentException()
+    var count = 0
+    for (i in 0 until commands.length) {
+        if (commands[i] == '[') count++
+        if (commands[i] == ']') count--
+        if (count < 0) break
+    }
+    if (count != 0) throw IllegalArgumentException()
     var cellsList = mutableListOf<Int>()
     for (i in 0 until cells) cellsList.add(0)
     var numberList = cells / 2
