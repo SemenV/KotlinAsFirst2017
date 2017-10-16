@@ -324,7 +324,7 @@ fun fromRoman(roman: String): Int {
 fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> {
     if (commands.contains(Regex("""[^\[\]\+\->< ]"""))) throw IllegalArgumentException()
     if (Regex("""\[""").findAll(commands, 0).count() != Regex("""\]""").findAll(commands, 0).count())
-        throw IllegalArgumentException()
+        throw throw IllegalArgumentException()
     var cellsList = mutableListOf<Int>()
     for (i in 0 until cells) cellsList.add(0)
     var numberList = cells / 2
@@ -339,18 +339,24 @@ fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> {
                 '<' -> numberList--
                 '-' -> cellsList[numberList]--
                 '+' -> cellsList[numberList]++
-                ' ' -> limitCount--
+                ' ' -> {
+                }
             }
             numberOfCommand++
         } else {
             when (commands[numberOfCommand]) {
                 '[' -> {
-                    if (cellsList[numberList] == 0) numberOfCommand = findEndBacket(commands, numberOfCommand)
-                    else numberOfCommand++
+                    if (cellsList[numberList] == 0) {
+                        limitCount--
+                        numberOfCommand = findEndBacket(commands, numberOfCommand)
+                    } else numberOfCommand++
                 }
                 ']' -> {
                     if (cellsList[numberList] == 0) numberOfCommand++
-                    else numberOfCommand = findStartBacket(commands, numberOfCommand) + 1
+                    else {
+                        limitCount--
+                        numberOfCommand = findStartBacket(commands, numberOfCommand) + 1
+                    }
                 }
                 else -> throw IllegalArgumentException()
             }
