@@ -105,14 +105,14 @@ fun dateDigitToStr(digital: String): String { //здесь тоже переде
     try {
         var partsLine = digital.split(".")
         if (partsLine.size != 3) return ""
-        var month = revertStrMonthToInt(partsLine[1])
+        var month = strIntToMonth(partsLine[1])
         return String.format("%d %s %d", partsLine[0].toInt(), month, partsLine[2].toInt())
     } catch (e: Exception) {
         return ""
     }
 }
 
-fun revertStrMonthToInt(strMonth: String): String = when (strMonth) {
+fun strIntToMonth(strMonth: String): String = when (strMonth) {
     "01" -> "января"
     "02" -> "февраля"
     "03" -> "марта"
@@ -125,7 +125,7 @@ fun revertStrMonthToInt(strMonth: String): String = when (strMonth) {
     "10" -> "октября"
     "11" -> "ноября"
     "12" -> "декабря"
-    else -> throw Exception()
+    else -> throw Exception("Неправильно введен месяц")
 }
 
 /**
@@ -142,7 +142,9 @@ fun revertStrMonthToInt(strMonth: String): String = when (strMonth) {
  */
 fun flattenPhoneNumber(phone: String): String {
     if (phone.contains(Regex("""[^\+\d \(\)-]""")) || (!phone.contains(Regex("""\d""")))) return ""
-    return phone.replace(Regex("""[^\+\d]"""), "")
+    val newPhone = phone.replace(Regex("""[^\+\d]"""), "")
+    if ((Regex("""\+""").findAll(newPhone, 1).count() > 0)) return ""
+    else return newPhone
 }
 
 /**
@@ -200,6 +202,7 @@ fun plusMinus(expression: String): Int {
         var str = expression.split(" ")
         var sum = str[0].toInt()
         for (i in 0 until str.size) {
+            if (i + 1 > str.size) return sum
             when (str[i]) {
                 "+" -> sum += str[i + 1].toInt()
                 "-" -> sum -= str[i + 1].toInt()
@@ -207,7 +210,7 @@ fun plusMinus(expression: String): Int {
         }
         return sum
     } catch (e: IllegalArgumentException) {
-        throw IllegalArgumentException()
+        throw IllegalArgumentException("")
     }
 }
 
@@ -224,8 +227,8 @@ fun firstDuplicateIndex(str: String): Int {
     var vocList = str.toLowerCase().split(" ")
     var vocLenght = 0
     for (i in 0 until vocList.size - 1) {
+        if ((vocList[i]) == vocList[i + 1]) return vocLenght + i
         vocLenght += vocList[i].length
-        if ((vocList[i]) == vocList[i + 1]) return vocLenght - vocList[i].length + i
     }
     return -1
 }
@@ -242,7 +245,7 @@ fun firstDuplicateIndex(str: String): Int {
  * Все цены должны быть положительными
  */
 fun mostExpensive(description: String): String {
-    try {
+    return try {
         var feedList = description.split(Regex(""" |; """))
         var max = 0.0
         var element = 0
@@ -251,9 +254,9 @@ fun mostExpensive(description: String): String {
                 max = feedList[i].toDouble()
                 element = i - 1
             }
-        return feedList[element]
+        feedList[element]
     } catch (e: Exception) {
-        return ""
+        ""
     }
 }
 
@@ -270,13 +273,13 @@ fun mostExpensive(description: String): String {
  */
 fun fromRoman(roman: String): Int {
     var rom = roman
-    val simbols = listOf("CM", "CD", "XC", "XL", "IX", "IV", "M", "D", "C", "L", "X", "V", "I")
+    val symbols = listOf("CM", "CD", "XC", "XL", "IX", "IV", "M", "D", "C", "L", "X", "V", "I")
     val numbers = listOf(900, 400, 90, 40, 9, 4, 1000, 500, 100, 50, 10, 5, 1)
     var sum = 0
     var i = 0
     if (roman.isEmpty()) return -1
-    while ((rom != "") && (i <= 12)) {
-        var simbolRom = simbols[i]
+    while ((rom != "") && (i < symbols.size)) {
+        var simbolRom = symbols[i]
         sum += Regex("""$simbolRom""").findAll(rom, 0).count() * numbers[i]
         rom = rom.replace(Regex("""$simbolRom"""), "")
         i++
@@ -330,42 +333,36 @@ fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> {
         if (count < 0) break
     }
     if (count != 0) throw IllegalArgumentException()
-    var cellsList = mutableListOf<Int>()
-    for (i in 0 until cells) cellsList.add(0)
+    var cellsList = MutableList(cells, { 0 })
     var numberList = cells / 2
     var limitCount = 0
     var numberOfCommand = 0
-    val basicCommands = "><-+ "
     while ((numberOfCommand < commands.length) && (limitCount < limit)) {
         limitCount++
-        if (basicCommands.contains(commands[numberOfCommand])) {
-            when (commands[numberOfCommand]) {
-                '>' -> numberList++
-                '<' -> numberList--
-                '-' -> cellsList[numberList]--
-                '+' -> cellsList[numberList]++
-                ' ' -> {
-                }
+        when (commands[numberOfCommand]) {
+            '>' -> numberList++
+            '<' -> numberList--
+            '-' -> cellsList[numberList]--
+            '+' -> cellsList[numberList]++
+            ' ' -> {
             }
-            numberOfCommand++
-        } else {
-            when (commands[numberOfCommand]) {
-                '[' -> {
-                    if (cellsList[numberList] == 0) {
-                        limitCount--
-                        numberOfCommand = findEndBacket(commands, numberOfCommand)
-                    } else numberOfCommand++
+            '[' -> {
+                if (cellsList[numberList] == 0) {
+                    limitCount--
+                    numberOfCommand = findEndBacket(commands, numberOfCommand)
+                } else numberOfCommand++
+                numberOfCommand--
+            }
+            ']' -> {
+                if (cellsList[numberList] == 0) numberOfCommand++
+                else {
+                    limitCount--
+                    numberOfCommand = findStartBacket(commands, numberOfCommand) + 1
                 }
-                ']' -> {
-                    if (cellsList[numberList] == 0) numberOfCommand++
-                    else {
-                        limitCount--
-                        numberOfCommand = findStartBacket(commands, numberOfCommand) + 1
-                    }
-                }
-                else -> throw IllegalArgumentException()
+                numberOfCommand--
             }
         }
+        numberOfCommand++
         if (numberList !in 0 until cells) throw IllegalStateException()
     }
     return cellsList.toList()
@@ -375,10 +372,10 @@ fun findEndBacket(str: String, startIndex: Int): Int {
     var count = 1
     var i = startIndex + 1
     while (count != 0) {
+        if (i > str.length) throw IllegalArgumentException()
         if (str[i] == '[') count++
         if (str[i] == ']') count--
         i++
-        if (i > str.length) throw IllegalArgumentException()
     }
     return i
 }
@@ -387,10 +384,10 @@ fun findStartBacket(str: String, startIndex: Int): Int {
     var count = 1
     var i = startIndex - 1
     while (count != 0) {
+        if (i < 0) throw IllegalArgumentException()
         if (str[i] == ']') count++
         if (str[i] == '[') count--
         i--
-        if (i < 0) throw IllegalArgumentException()
     }
     return i
 }

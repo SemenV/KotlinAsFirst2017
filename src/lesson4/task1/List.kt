@@ -5,6 +5,7 @@ package lesson4.task1
 import lesson1.task1.discriminant
 import lesson1.task1.sqr
 import java.lang.Math.*
+import lesson3.task1.*
 
 /**
  * Пример
@@ -244,7 +245,7 @@ fun convertToString(n: Int, base: Int): String {
     var converList = convert(n, base)
     var str = StringBuilder()
     for (element in 0 until converList.size) {
-        if (converList[element] > 9) str.append((converList[element] + 87).toChar())
+        if (converList[element] > 9) str.append('a' + converList[element] - 10)
         else str.append(converList[element])
     }
     return str.toString()
@@ -267,8 +268,6 @@ fun decimal(digits: List<Int>, base: Int): Int {
     return sum
 }
 
-fun powInt(a: Int, b: Int) = (pow(a.toDouble(), b.toDouble())).toInt()
-
 /**
  * Сложная
  *
@@ -281,7 +280,7 @@ fun powInt(a: Int, b: Int) = (pow(a.toDouble(), b.toDouble())).toInt()
 fun decimalFromString(str: String, base: Int): Int {
     var a = mutableListOf<Int>()
     for (i in 0 until str.length) {
-        a.add(str[i].toInt())
+        a.add(str[i].toInt()) //позже сделаю
         if (a[i] > 59) a[i] -= 87
         else a[i] -= 48
     }
@@ -329,7 +328,7 @@ fun hundredAll(a: Int): String {
     val thread = a % 10
     return when {
         (second == 1) && (thread == 0) -> str + " десять"
-        (second == 1) && (thread != 0) -> str + units_1_(thread)
+        (second == 1) && (thread != 0) -> str + units4dozen1(thread)
         (thread == 1) -> str + dozens(second) + " один"
         (thread == 2) -> str + dozens(second) + " два"
         else -> str + dozens(second) + units(thread)
@@ -342,7 +341,7 @@ fun thousandAll(a: Int): String {
     val thread = a % 10
     return when {
         (second == 1) && (thread == 0) -> str + " десять" + " тысяч"
-        (second == 1) && (thread != 0) -> str + units_1_(thread) + " тысяч"
+        (second == 1) && (thread != 0) -> str + units4dozen1(thread) + " тысяч"
         (second == 0) -> str + units(thread) + thousand(thread)
         else -> str + dozens(second) + units(thread) + thousand(thread)
     }
@@ -374,7 +373,7 @@ fun dozens(a: Int): String = when (a) {
     else -> ""
 }
 
-fun units_1_(a: Int): String = when (a) {
+fun units4dozen1(a: Int): String = when (a) {
     1 -> " одиннадцать"
     2 -> " двенадцать"
     3 -> " тринадцать"
@@ -405,10 +404,5 @@ fun thousand(a: Int): String = when (a) {
     2 -> " тысячи"
     3 -> " тысячи"
     4 -> " тысячи"
-    5 -> " тысяч"
-    6 -> " тысяч"
-    7 -> " тысяч"
-    8 -> " тысяч"
-    9 -> " тысяч"
     else -> " тысяч"
 }

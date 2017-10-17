@@ -136,7 +136,7 @@ fun maxDivisor(n: Int): Int {
     for (i in (n / 2) downTo 1)
         if (n % i == 0) {
             del = i
-            break
+            return del
         }
     return del
 }
@@ -149,8 +149,9 @@ fun maxDivisor(n: Int): Int {
  * Например, 25 и 49 взаимно простые, а 6 и 8 -- нет.
  */
 fun isCoPrime(m: Int, n: Int): Boolean {
-    for (i in 2..Math.max(m, n))
+    for (i in 2..Math.max(m, n)) {
         if ((m % i == 0) && (n % i == 0)) return false
+    }
     return true
 }
 
@@ -163,7 +164,7 @@ fun isCoPrime(m: Int, n: Int): Boolean {
  * Например, для интервала 21..28 21 <= 5*5 <= 28, а для интервала 51..61 квадрата не существует.
  */
 fun squareBetweenExists(m: Int, n: Int): Boolean {
-    for (i in 0..min(m, n)) {
+    for (i in 0..(sqrt(max(m, n).toDouble()).toInt()) + 1) {
         var iDouble = i.toDouble()
         if (sqr(iDouble) in min(m, n)..max(m, n)) return true
     }
@@ -203,7 +204,7 @@ fun cos(x: Double, eps: Double): Double {
     var fact = 2
     var sign = -1
     var sum = 1.0
-    while (pow(number, fact.toDouble()) / factorial(fact) >= eps) {
+    while (abs(pow(number, fact.toDouble())) / factorial(fact) >= eps) {
         var seqMemb = sign * pow(number, fact.toDouble()) / factorial(fact)
         fact += 2
         sign = -sign
