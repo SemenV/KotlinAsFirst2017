@@ -279,9 +279,9 @@ fun fromRoman(roman: String): Int {
     var i = 0
     if (roman.isEmpty()) return -1
     while ((rom != "") && (i < symbols.size)) {
-        var simbolRom = symbols[i]
-        sum += Regex("""$simbolRom""").findAll(rom, 0).count() * numbers[i]
-        rom = rom.replace(Regex("""$simbolRom"""), "")
+        var symbolRom = symbols[i]
+        sum += Regex("""$symbolRom""").findAll(rom, 0).count() * numbers[i]
+        rom = rom.replace(Regex("""$symbolRom"""), "")
         i++
     }
     if (rom.isNotEmpty()) return -1
@@ -324,6 +324,7 @@ fun fromRoman(roman: String): Int {
  * IllegalArgumentException должен бросаться даже если ошибочная команда не была достигнута в ходе выполнения.
  *
  */
+
 fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> {
     if (commands.contains(Regex("""[^\[\]\+\->< ]"""))) throw IllegalArgumentException()
     var count = 0
@@ -336,8 +337,9 @@ fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> {
     var cellsList = MutableList(cells, { 0 })
     var numberList = cells / 2
     var limitCount = 0
-    var numberOfCommand = 0
-    while ((numberOfCommand < commands.length) && (limitCount < limit)) {
+    var numberOfCommand = -1
+    while ((numberOfCommand + 1 < commands.length) && (limitCount < limit)) {
+        numberOfCommand++
         limitCount++
         when (commands[numberOfCommand]) {
             '>' -> numberList++
@@ -362,7 +364,6 @@ fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> {
                 numberOfCommand--
             }
         }
-        numberOfCommand++
         if (numberList !in 0 until cells) throw IllegalStateException()
     }
     return cellsList.toList()
