@@ -197,12 +197,13 @@ fun factorize(n: Int): List<Int> {
     var a = mutableListOf<Int>()
     var number = 2
     while (number <= newn) {
-        if (newn % number == 0) {
-            a.add(number)
-            newn /= number
-            number--
+        when ((newn % number) == 0) {
+            true -> {
+                a.add(number)
+                newn /= number
+            }
+            false -> number++
         }
-        number++
     }
     return a.toList()
 }
@@ -280,10 +281,11 @@ fun decimal(digits: List<Int>, base: Int): Int {
 fun decimalFromString(str: String, base: Int): Int {
     var a = mutableListOf<Int>()
     for (i in 0 until str.length) {
-        a.add(str[i].toInt()) //позже сделаю
-        if (a[i] > 59) a[i] -= 87
-        else a[i] -= 48
+        if (str[i] >= 'a') {
+            a.add(str[i] - 'a' + 10)
+        } else a.add(str[i] - '0')
     }
+    println(a)
     return decimal(a, base)
 }
 

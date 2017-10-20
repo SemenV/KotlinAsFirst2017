@@ -198,11 +198,12 @@ fun bestHighJump(jumps: String): Int {
  * Про нарушении формата входной строки бросить исключение IllegalArgumentException
  */
 fun plusMinus(expression: String): Int {
+    if (expression.contains(Regex("""[^\+\d\- ]"""))) throw IllegalArgumentException("")
     try {
         var str = expression.split(" ")
         var sum = str[0].toInt()
-        for (i in 0 until str.size) {
-            if (i + 1 > str.size) return sum
+        for (i in 1 until str.size) {
+            if (i + 1 >= str.size) return sum
             when (str[i]) {
                 "+" -> sum += str[i + 1].toInt()
                 "-" -> sum -= str[i + 1].toInt()
@@ -225,10 +226,10 @@ fun plusMinus(expression: String): Int {
  */
 fun firstDuplicateIndex(str: String): Int {
     var vocList = str.toLowerCase().split(" ")
-    var vocLenght = 0
+    var vocLength = 0
     for (i in 0 until vocList.size - 1) {
-        if ((vocList[i]) == vocList[i + 1]) return vocLenght + i
-        vocLenght += vocList[i].length
+        if ((vocList[i]) == vocList[i + 1]) return vocLength + i
+        vocLength += vocList[i].length
     }
     return -1
 }
@@ -349,22 +350,13 @@ fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> {
             ' ' -> {
             }
             '[' -> {
-                if (cellsList[numberList] == 0) {
-                    limitCount--
-                    numberOfCommand = findEndBacket(commands, numberOfCommand)
-                } else numberOfCommand++
-                numberOfCommand--
+                if (cellsList[numberList] == 0) numberOfCommand = findEndBacket(commands, numberOfCommand)
             }
             ']' -> {
-                if (cellsList[numberList] == 0) numberOfCommand++
-                else {
-                    limitCount--
-                    numberOfCommand = findStartBacket(commands, numberOfCommand) + 1
-                }
-                numberOfCommand--
+                if (cellsList[numberList] != 0) numberOfCommand = findStartBacket(commands, numberOfCommand)
             }
         }
-        if (numberList !in 0 until cells) throw IllegalStateException()
+        if (numberList !in 0 until cells) throw IllegalStateException("$numberList")
     }
     return cellsList.toList()
 }
@@ -383,12 +375,12 @@ fun findEndBacket(str: String, startIndex: Int): Int {
 
 fun findStartBacket(str: String, startIndex: Int): Int {
     var count = 1
-    var i = startIndex - 1
+    var i = startIndex
     while (count != 0) {
+        i--
         if (i < 0) throw IllegalArgumentException()
         if (str[i] == ']') count++
         if (str[i] == '[') count--
-        i--
     }
     return i
 }
