@@ -350,10 +350,14 @@ fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> {
             ' ' -> {
             }
             '[' -> {
-                if (cellsList[numberList] == 0) numberOfCommand = findEndBacket(commands, numberOfCommand)
+                if (cellsList[numberList] == 0) {
+                    numberOfCommand = findEndBacket(commands, numberOfCommand)
+                }
             }
             ']' -> {
-                if (cellsList[numberList] != 0) numberOfCommand = findStartBacket(commands, numberOfCommand)
+                if (cellsList[numberList] != 0) {
+                    numberOfCommand = findStartBacket(commands, numberOfCommand)
+                }
             }
         }
         if (numberList !in 0 until cells) throw IllegalStateException("$numberList")
@@ -363,12 +367,12 @@ fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> {
 
 fun findEndBacket(str: String, startIndex: Int): Int {
     var count = 1
-    var i = startIndex + 1
+    var i = startIndex
     while (count != 0) {
+        i++
         if (i > str.length) throw IllegalArgumentException()
         if (str[i] == '[') count++
         if (str[i] == ']') count--
-        i++
     }
     return i
 }
@@ -384,3 +388,4 @@ fun findStartBacket(str: String, startIndex: Int): Int {
     }
     return i
 }
+
