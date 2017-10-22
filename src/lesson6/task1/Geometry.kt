@@ -1,4 +1,5 @@
 @file:Suppress("UNUSED_PARAMETER")
+
 package lesson6.task1
 
 import lesson1.task1.sqr
@@ -30,7 +31,8 @@ class Triangle private constructor(private val points: Set<Point>) {
 
     val c: Point get() = pointList[2]
 
-    constructor(a: Point, b: Point, c: Point): this(linkedSetOf(a, b, c))
+    constructor(a: Point, b: Point, c: Point) : this(linkedSetOf(a, b, c))
+
     /**
      * Пример: полупериметр
      */
@@ -104,6 +106,7 @@ fun main(args: Array<String>) {
 }
 
 class Square(val column: Int, val row: Int)
+
 /**
  * Средняя
  *
@@ -135,9 +138,10 @@ fun diameter(vararg points: Point): Segment {
  * Центр её должен находиться посередине между точками, а радиус составлять половину расстояния между ними
  */
 fun circleByDiameter(diameter: Segment): Circle {
-    val centre = Point((diameter.begin.x - diameter.end.x) / 2, (diameter.begin.y - diameter.end.y) / 2)
-    return Circle(centre, (diameter.begin.distance(diameter.end)) / 2)
+    val centre = Point((diameter.end.x + diameter.begin.x) / 2, (diameter.end.y + diameter.begin.y) / 2)
+    return Circle(centre, (diameter.end.distance(diameter.begin)) / 2)
 }
+
 /**
  * Прямая, заданная точкой point и углом наклона angle (в радианах) по отношению к оси X.
  * Уравнение прямой: (y - point.y) * cos(angle) = (x - point.x) * sin(angle)
@@ -149,7 +153,7 @@ class Line private constructor(val b: Double, val angle: Double) {
         assert(angle >= 0 && angle < Math.PI) { "Incorrect line angle: $angle" }
     }
 
-    constructor(point: Point, angle: Double): this(point.y * Math.cos(angle) - point.x * Math.sin(angle), angle)
+    constructor(point: Point, angle: Double) : this(point.y * Math.cos(angle) - point.x * Math.sin(angle), angle)
 
     /**
      * Средняя
