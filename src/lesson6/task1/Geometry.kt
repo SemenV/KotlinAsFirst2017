@@ -168,8 +168,8 @@ class Line private constructor(val b: Double, val angle: Double) {
         val sinOf2x = sin(newAngle1 - newAngle2)
         val x = bb / sinOf2x
         val y: Double
-        if (cos(newAngle1).toInt() < 1e-10) y = (x * sin(newAngle2) + other.b) / cos(newAngle2)
-        else y = (x * sin(newAngle1) + other.b) / cos(newAngle1)
+        if (cos(newAngle1) < 1e-13) y = (x * sin(newAngle2) + other.b) / cos(newAngle2)
+        else y = (x * sin(newAngle1) + b) / cos(newAngle1)
         return Point(x, y)
     }
 
