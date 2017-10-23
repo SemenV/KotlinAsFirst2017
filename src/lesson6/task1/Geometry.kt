@@ -167,14 +167,10 @@ class Line private constructor(val b: Double, val angle: Double) {
         val bb = (other.b * cos(newAngle1)) - (b * cos(newAngle2))
         val sinOf2x = sin(newAngle1 - newAngle2)
         val x = bb / sinOf2x
-        var y1 = x * sin(newAngle1) + b
-        var y2 = x * sin(newAngle2) + other.b
-        y1 *= cos(newAngle1)
-        y2 *= cos(newAngle2)
-        //println(sin(newAngle2))
-        print("bb= $bb sinOf2x= $sinOf2x x= $x y1= $y1 y2= $y2")
-        println(" b=" + b)
-        return Point(x, y1)
+        val y: Double
+        if (cos(newAngle1).toInt() < 1e-10) y = (x * sin(newAngle2) + other.b) / cos(newAngle2)
+        else y = (x * sin(newAngle1) + other.b) / cos(newAngle1)
+        return Point(x, y)
     }
 
 
