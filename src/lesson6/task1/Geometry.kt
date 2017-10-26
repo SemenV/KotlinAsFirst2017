@@ -187,7 +187,20 @@ class Line private constructor(val b: Double, val angle: Double) {
  *
  * Построить прямую по отрезку
  */
-fun lineBySegment(s: Segment): Line = TODO()
+fun lineBySegment(s: Segment): Line {
+    val t = (s.end.y - s.begin.y)
+    val y = (s.end.x - s.begin.x)
+    val xEq = s.begin.x == s.end.x
+    val yEq = s.begin.y == s.end.y
+    var ang = if (!xEq && !yEq) atan((t / y) % (2 * PI))
+    else {
+        if (xEq) PI / 2
+        else 0.0
+    }
+    println(ang)
+    return Line(s.begin, ang)
+
+}
 
 /**
  * Средняя
@@ -205,7 +218,7 @@ fun bisectorByPoints(a: Point, b: Point): Line {
     var middle = Point(((b.x + a.x) / 2), ((a.y + b.y) / 2))
     val t = (b.y - a.y)
     val y = (b.x - a.x)
-    var tg = if (b.x != a.x) (t / y + PI / 2) % (2 * PI)
+    var tg = if (b.x != a.x) (atan(t / y) + PI / 2) % (2 * PI)
     else 0.0
     return Line(middle, tg)
 }
@@ -228,9 +241,6 @@ fun findNearestCirclePair(vararg circles: Circle): Pair<Circle, Circle> = TODO()
  * построить окружность, описанную вокруг треугольника - эквивалентная задача).
  */
 fun circleByThreePoints(a: Point, b: Point, c: Point): Circle {
-
-    //не работает, проверяю пока другие
-
     var listSortedP = listOf(a, b, c).sortedBy { it.x }
     val firstPerp = bisectorByPoints(listSortedP[1], listSortedP[0])
     val secondPerp = bisectorByPoints(listSortedP[1], listSortedP[2])
