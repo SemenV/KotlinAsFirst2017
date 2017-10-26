@@ -272,10 +272,12 @@ fun mostExpensive(description: String): String {
  *
  * Вернуть -1, если roman не является корректным римским числом
  */
-fun fromRoman(roman: String): Int {
+fun fromRoman(roman: String): Int { //в процессе
     var rom = roman
     val symbols = listOf("CM", "CD", "XC", "XL", "IX", "IV", "M", "D", "C", "L", "X", "V", "I")
     val numbers = listOf(900, 400, 90, 40, 9, 4, 1000, 500, 100, 50, 10, 5, 1)
+    val ogr = listOf<Int>(3, 3, 3, 3, 3, 2, 3, 3, 3, 3, 3, 3, 3)
+    //в процессе
     var sum = 0
     var i = 0
     if (roman.isEmpty()) return -1

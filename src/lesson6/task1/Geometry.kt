@@ -77,8 +77,8 @@ data class Circle(val center: Point, val radius: Double) {
      */
     fun distance(other: Circle): Double {  //
         val dist = other.center.distance(center) - other.radius - radius
-        return if (dist < 0) 0.0
-        else dist
+        if (dist < 0) return 0.0
+        return dist
     }
 
     /**
@@ -117,11 +117,9 @@ fun diameter(vararg points: Point): Segment {
     if (points.size < 2) throw  IllegalArgumentException()
     var max = 0.0
     var ijElem = Segment(Point(0.0, 0.0), Point(0.0, 0.0))
-    var pointsSizeWOut1 = points.size - 1
-    var lengthBtwnPnts: Double
-    for (i in 0..pointsSizeWOut1) {
-        for (j in i..pointsSizeWOut1) {
-            lengthBtwnPnts = points[i].distance(points[j])
+    for (i in 0..points.lastIndex) {
+        for (j in i..points.lastIndex) {
+            var lengthBtwnPnts = points[i].distance(points[j])
             if (max < lengthBtwnPnts) {
                 max = lengthBtwnPnts
                 ijElem = Segment(points[i], points[j])
@@ -167,9 +165,8 @@ class Line private constructor(val b: Double, val angle: Double) {
         val bb = (other.b * cos(newAngle1)) - (b * cos(newAngle2))
         val sinOf2x = sin(newAngle1 - newAngle2)
         val x = bb / sinOf2x
-        val y: Double
-        if (cos(newAngle1) < 1e-13) y = (x * sin(newAngle2) + other.b) / cos(newAngle2)
-        else y = (x * sin(newAngle1) + b) / cos(newAngle1)
+        val y = if (cos(newAngle1) < 1e-13) (x * sin(newAngle2) + other.b) / cos(newAngle2)
+        else (x * sin(newAngle1) + b) / cos(newAngle1)
         return Point(x, y)
     }
 
@@ -204,7 +201,14 @@ fun lineByPoints(a: Point, b: Point): Line = TODO()
  *
  * Построить серединный перпендикуляр по отрезку или по двум точкам
  */
-fun bisectorByPoints(a: Point, b: Point): Line = TODO()
+fun bisectorByPoints(a: Point, b: Point): Line {
+    var middle = Point(((b.x + a.x) / 2), ((a.y + b.y) / 2))
+    val t = (b.y - a.y)
+    val y = (b.x - a.x)
+    var tg = if (b.x != a.x) (t / y + PI / 2) % (2 * PI)
+    else 0.0
+    return Line(middle, tg)
+}
 
 /**
  * Средняя
@@ -223,7 +227,18 @@ fun findNearestCirclePair(vararg circles: Circle): Pair<Circle, Circle> = TODO()
  * (построить окружность по трём точкам, или
  * построить окружность, описанную вокруг треугольника - эквивалентная задача).
  */
-fun circleByThreePoints(a: Point, b: Point, c: Point): Circle = TODO()
+fun circleByThreePoints(a: Point, b: Point, c: Point): Circle {
+
+    //не работает, проверяю пока другие
+
+    var listSortedP = listOf(a, b, c).sortedBy { it.x }
+    val firstPerp = bisectorByPoints(listSortedP[1], listSortedP[0])
+    val secondPerp = bisectorByPoints(listSortedP[1], listSortedP[2])
+    val pointInters = firstPerp.crossPoint(secondPerp)
+    val radius = a.distance(pointInters)
+    return Circle(pointInters, radius)
+}
+//fun
 
 /**
  * Очень сложная
