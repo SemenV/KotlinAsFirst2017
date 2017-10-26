@@ -192,14 +192,12 @@ fun lineBySegment(s: Segment): Line {
     val y = (s.end.x - s.begin.x)
     val xEq = s.begin.x == s.end.x
     val yEq = s.begin.y == s.end.y
-    var ang = if (!xEq && !yEq) atan((t / y) % (2 * PI))
+    var ang = if (!xEq && !yEq) atan(t / y)
     else {
         if (xEq) PI / 2
         else 0.0
     }
-    println(ang)
     return Line(s.begin, ang)
-
 }
 
 /**
@@ -207,7 +205,7 @@ fun lineBySegment(s: Segment): Line {
  *
  * Построить прямую по двум точкам
  */
-fun lineByPoints(a: Point, b: Point): Line = TODO()
+fun lineByPoints(a: Point, b: Point): Line = lineBySegment(Segment(a, b))
 
 /**
  * Сложная
@@ -241,12 +239,10 @@ fun findNearestCirclePair(vararg circles: Circle): Pair<Circle, Circle> = TODO()
  * построить окружность, описанную вокруг треугольника - эквивалентная задача).
  */
 fun circleByThreePoints(a: Point, b: Point, c: Point): Circle {
-    var listSortedP = listOf(a, b, c).sortedBy { it.x }
-    val firstPerp = bisectorByPoints(listSortedP[1], listSortedP[0])
-    val secondPerp = bisectorByPoints(listSortedP[1], listSortedP[2])
-    val pointInters = firstPerp.crossPoint(secondPerp)
-    val radius = a.distance(pointInters)
-    return Circle(pointInters, radius)
+    //var listSortedP = listOf(a, b, c).sortedBy { it.x }
+    val peres = bisectorByPoints(a, b).crossPoint(bisectorByPoints(b, c))
+    val radius = peres.distance(a)
+    return Circle(peres, radius)
 }
 //fun
 
