@@ -196,7 +196,6 @@ fun lineBySegment(s: Segment): Line {
         yEq -> 0.0
         else -> atan((s.end.y - s.begin.y) / (s.end.x - s.begin.x)) % PI
     }
-    if (tg > PI / 2) tg -= PI
     return Line(s.begin, tg)
 }
 
@@ -221,7 +220,6 @@ fun bisectorByPoints(a: Point, b: Point): Line {
         (b.y == b.y) -> 0.0
         else -> (atan(t / y) + PI / 2) % PI
     }
-    if (tg > PI / 2) tg -= PI
     return Line(middle, tg)
 }
 
