@@ -161,13 +161,13 @@ class Line private constructor(val b: Double, val angle: Double) {
      * Для этого необходимо составить и решить систему из  двух уравнений (каждое для своей прямой)
      */
     fun crossPoint(other: Line): Point {
-        val newAngle1 = angle % (2 * PI)
-        val newAngle2 = other.angle % (2 * PI)
-        val bb = (other.b * cos(newAngle1)) - (b * cos(newAngle2))
-        val sinOf2x = sin(newAngle1 - newAngle2)
+        val myAngle = angle % (2 * PI)
+        val otherAngle = other.angle % (2 * PI)
+        val bb = (other.b * cos(myAngle)) - (b * cos(otherAngle))
+        val sinOf2x = sin(myAngle - otherAngle)
         val x = bb / sinOf2x
-        val y = if (cos(newAngle1) < 1e-13) (x * sin(newAngle2) + other.b) / cos(newAngle2)
-        else (x * sin(newAngle1) + b) / cos(newAngle1)
+        val y = if (cos(myAngle) < 1e-13) (x * sin(otherAngle) + other.b) / cos(otherAngle)
+        else (x * sin(myAngle) + b) / cos(myAngle)
         return Point(x, y)
     }
 
@@ -197,7 +197,7 @@ fun lineBySegment(s: Segment): Line {
         if (xEq) PI / 2
         else 0.0
     }
-    if (tg > PI / 2) tg = PI - tg
+    if (tg > PI / 2) tg -= PI
     return Line(s.begin, tg)
 }
 
@@ -217,8 +217,9 @@ fun bisectorByPoints(a: Point, b: Point): Line {
     var middle = Point(((b.x + a.x) / 2), ((a.y + b.y) / 2))
     val t = (b.y - a.y)
     val y = (b.x - a.x)
-    var tg = if (b.x != a.x) (atan(t / y) + PI / 2) % (2 * PI)
+    var tg = if (b.x != a.x) (atan(t / y) + PI / 2) % PI
     else 0.0
+    if (tg > PI / 2) tg -= PI
     return Line(middle, tg)
 }
 
