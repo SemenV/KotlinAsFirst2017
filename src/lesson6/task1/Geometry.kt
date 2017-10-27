@@ -197,7 +197,7 @@ fun lineBySegment(s: Segment): Line {
         else -> atan((s.end.y - s.begin.y) / (s.end.x - s.begin.x))
     }
     if (tg < 0.0) tg += PI
-    return Line(s.begin, tg % PI)
+    return Line(s.begin, tg)
 }
 
 /**
@@ -213,16 +213,14 @@ fun lineByPoints(a: Point, b: Point): Line = lineBySegment(Segment(a, b))
  * Построить серединный перпендикуляр по отрезку или по двум точкам
  */
 fun bisectorByPoints(a: Point, b: Point): Line {
-    var middle = Point(((b.x + a.x) / 2), ((a.y + b.y) / 2))
-    val t = (b.y - a.y)
-    val y = (b.x - a.x)
+    var middlePoint = Point(((b.x + a.x) / 2), ((a.y + b.y) / 2))
     var tg = when {
         (b.x == a.x) -> PI / 2
         (b.y == b.y) -> 0.0
-        else -> (atan(t / y) + PI / 2)
+        else -> (atan((b.y - a.y) / (b.x - a.x)) + PI / 2)
     }
     if (tg < 0.0) tg += PI
-    return Line(middle, tg % PI)
+    return Line(middlePoint, tg)
 }
 
 /**
