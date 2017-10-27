@@ -3,6 +3,7 @@
 package lesson6.task1
 
 import lesson1.task1.sqr
+import lesson4.task1.abs
 import java.lang.Math.*
 
 /**
@@ -188,7 +189,7 @@ class Line private constructor(val b: Double, val angle: Double) {
  * Построить прямую по отрезку
  */
 fun lineBySegment(s: Segment): Line {
-    val tg = atan((s.begin.y - s.end.y) / (s.begin.x - s.end.x))
+    var tg = atan((s.end.y - s.begin.y) / (s.end.x - s.begin.x)) % PI
     val xEq = s.begin.x == s.end.x
     val yEq = s.begin.y == s.end.y
     var ang = if (!xEq && !yEq) tg
@@ -196,8 +197,8 @@ fun lineBySegment(s: Segment): Line {
         if (xEq) PI / 2
         else 0.0
     }
-    if (tg < 0) tg + PI
-    return Line(s.end, tg)
+    if (tg > PI / 2) tg = PI - tg
+    return Line(s.begin, tg)
 }
 
 /**
