@@ -216,7 +216,7 @@ fun bisectorByPoints(a: Point, b: Point): Line {
     var middlePoint = Point(((b.x + a.x) / 2), ((a.y + b.y) / 2))
     var tg = when {
         (b.x == a.x) -> PI / 2
-        (b.y == b.y) -> 0.0
+        (b.y == a.y) -> 0.0
         else -> (atan((b.y - a.y) / (b.x - a.x)) + PI / 2)
     }
     if (tg < 0.0) tg += PI
