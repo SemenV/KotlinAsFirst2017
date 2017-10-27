@@ -194,9 +194,10 @@ fun lineBySegment(s: Segment): Line {
     var tg = when {
         xEq -> PI / 2
         yEq -> 0.0
-        else -> atan((s.end.y - s.begin.y) / (s.end.x - s.begin.x)) % PI
+        else -> atan((s.end.y - s.begin.y) / (s.end.x - s.begin.x))
     }
-    return Line(s.begin, tg)
+    if (tg < 0.0) tg += PI
+    return Line(s.begin, tg % PI)
 }
 
 /**
@@ -218,9 +219,10 @@ fun bisectorByPoints(a: Point, b: Point): Line {
     var tg = when {
         (b.x == a.x) -> PI / 2
         (b.y == b.y) -> 0.0
-        else -> (atan(t / y) + PI / 2) % PI
+        else -> (atan(t / y) + PI / 2)
     }
-    return Line(middle, tg)
+    if (tg < 0.0) tg += PI
+    return Line(middle, tg % PI)
 }
 
 /**
