@@ -184,11 +184,9 @@ class Line private constructor(val b: Double, val angle: Double) {
  * Построить прямую по отрезку
  */
 fun lineBySegment(s: Segment): Line {
-    val xEq = s.begin.x == s.end.x
-    val yEq = s.begin.y == s.end.y
     var tg = when {
-        xEq -> PI / 2
-        yEq -> 0.0
+        s.begin.x == s.end.x -> PI / 2
+        s.begin.y == s.end.y -> 0.0
         else -> atan((s.end.y - s.begin.y) / (s.end.x - s.begin.x))
     }
     if (tg < 0.0) tg += PI
@@ -210,8 +208,8 @@ fun lineByPoints(a: Point, b: Point): Line = lineBySegment(Segment(a, b))
 fun bisectorByPoints(a: Point, b: Point): Line {
     var middlePoint = Point(((b.x + a.x) / 2), ((a.y + b.y) / 2))
     var tg = when {
-        (b.x == a.x) -> 0.0
-        (b.y == a.y) -> PI / 2
+        b.x == a.x -> 0.0
+        b.y == a.y -> PI / 2
         else -> atan((b.y - a.y) / (b.x - a.x)) + PI / 2
     }
     if (tg < 0.0) tg += PI
@@ -254,4 +252,20 @@ fun circleByThreePoints(a: Point, b: Point, c: Point): Circle {
  * три точки данного множества, либо иметь своим диаметром отрезок,
  * соединяющий две самые удалённые точки в данном множестве.
  */
-fun minContainingCircle(vararg points: Point): Circle = TODO()
+fun minContainingCircle(vararg points: Point): Circle {
+    val listSortedXP = points.sortedBy { it.x }
+    val xMin = listSortedXP[0]
+    val xMax = listSortedXP[listSortedXP.lastIndex]
+    val listSortedYP = points.sortedBy { it.y }
+    val yMax = listSortedYP[listSortedYP.lastIndex]
+    return circleByThreePoints(xMax, xMin, yMax)
+}
+
+
+
+
+
+
+
+
+
