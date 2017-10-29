@@ -2,6 +2,7 @@
 package lesson6.task2
 
 import java.lang.Math.abs
+import javax.swing.text.Segment
 
 /**
  * Клетка шахматной доски. Шахматная доска квадратная и имеет 8 х 8 клеток.
@@ -120,7 +121,7 @@ fun rookTrajectory(start: Square, end: Square): List<Square> {
 fun bishopMoveNumber(start: Square, end: Square): Int = when {
     !start.inside() || !end.inside() -> throw IllegalArgumentException()
     start == end -> 0
-    (start.column + end.column) % 2 == 1 || (start.row + end.row) % 2 == 1 -> -1
+    (start.column + end.column) % 2 != (start.row + end.row) % 2 -> -1
     abs(end.row - start.row) == abs(end.column - start.column) -> 1
     else -> 2
 }
@@ -228,4 +229,77 @@ fun knightMoveNumber(start: Square, end: Square): Int = TODO()
  *
  * Если возможно несколько вариантов самой быстрой траектории, вернуть любой из них.
  */
-fun knightTrajectory(start: Square, end: Square): List<Square> = TODO()
+fun knightTrajectory(start: Square, end: Square): List<Square> {
+/*
+ val desk = arrayOf( //вообще не нужно, но сделано, и красиво выглядит ^^
+        arrayOf("a8", "b8", "c8", "d8", "e8", "f8", "g8", "h8"),
+        arrayOf("a7", "b7", "c7", "d7", "e7", "f7", "g7", "h7"),
+        arrayOf("a6", "b6", "c6", "d6", "e6", "f6", "g6", "h6"),
+        arrayOf("a5", "b5", "c5", "d5", "e5", "f5", "g5", "h5"),
+        arrayOf("a4", "b4", "c4", "d4", "e4", "f4", "g4", "h4"),
+        arrayOf("a3", "b3", "c3", "d3", "e3", "f3", "g3", "h3"),
+        arrayOf("a2", "b2", "c2", "d2", "e2", "f2", "g2", "h2"),
+        arrayOf("a1", "b1", "c1", "d1", "e1", "f1", "g1", "h1")
+)
+while (start != end){
+    //var usedVertS = mutableSetOf<String>()
+    //var nowPosition = start.notation()
+    var lastPositions = mutableSetOf(start.notation())
+    var newVertS = mutableListOf<String>()
+    while (end.notation() !in lastPositions){
+        for (element in lastPositions) {
+            newVertS.addAll(allKnightSteps(square(element)))
+
+            // елемент + список кого к нему надо привязать
+        }
+        lastPositions.addAll(newVertS)
+        newVertS.clear()
+    }
+
+
+}
+return listOf(Square(1,1))
+}
+
+class Graph {
+private data class Vertex(val name: String) {
+    val parentVertex = mutableSetOf<Vertex>()
+}
+
+private val vertices = mutableMapOf<String, Vertex>()
+
+private operator fun get(name: String) = vertices[name] ?: throw IllegalArgumentException()
+
+fun addVertex(name: String) {
+    vertices[name] = Vertex(name)
+}
+
+private fun connect(first: Vertex, second: Vertex) {
+    first.parentVertex.add(second)
+    //second.parentVertex.add(first)
+}
+
+fun connect(first: String, second: String) = connect(this[first], this[second])
+
+fun neighbors(name: String) = vertices[name]?.parentVertex?.map { it.name } ?: listOf()
+
+}
+
+fun allKnightSteps(position: Square): List<String> {
+val step1 = Square(position.column + 2,position.row + 1)
+val step2 = Square(position.column + 2,position.row - 1)
+val step3 = Square(position.column + 1,position.row + 2)
+val step4 = Square(position.column + 1,position.row - 2)
+val step5 = Square(position.column - 1,position.row - 2)
+val step6 = Square(position.column - 1,position.row + 2)
+val step7 = Square(position.column - 2,position.row + 1)
+val step8 = Square(position.column - 2,position.row - 1)
+var finishList = mutableListOf<String>()
+var List = mutableListOf(step1,step2,step3,step4,step5,step6,step7,step8)
+for (i in 0..List.lastIndex) {
+    if (!List[i].inside()) List.removeAt(i)
+    else finishList.add(List[i].notation())
+}
+return finishList.toList()
+}
+*/
