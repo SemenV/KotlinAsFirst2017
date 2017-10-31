@@ -255,12 +255,17 @@ fun circleByThreePoints(a: Point, b: Point, c: Point): Circle {
 fun minContainingCircle(vararg points: Point): Circle {
     if (points.count() == 0) throw IllegalArgumentException()
     if (points.count() == 1) return Circle(points[0], 0.0)
-    val listSortedXP = points.sortedBy { it.x }
-    val xMin = listSortedXP[0]
-    val xMax = listSortedXP[listSortedXP.lastIndex]
-    val listSortedYP = points.sortedBy { it.y }
-    val yMax = listSortedYP[listSortedYP.lastIndex]
-    return circleByThreePoints(xMax, xMin, yMax)
+    var max = -1
+
+    for (i in 0..points.size) {
+        for (j in 1..points.size) {
+            if (i != j) {
+
+            }
+        }
+
+    }
+    return Circle(Point(0.0, 0.0), 0.0)
 }
 
 

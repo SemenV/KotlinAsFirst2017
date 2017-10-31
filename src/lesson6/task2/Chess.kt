@@ -24,8 +24,7 @@ data class Square(val column: Int, val row: Int) {
      * В нотации, колонки обозначаются латинскими буквами от a до h, а ряды -- цифрами от 1 до 8.
      * Для клетки не в пределах доски вернуть пустую строку
      */
-    fun notation(): String = if (!inside()) ""
-    else "${'a' + column - 1}$row"
+    fun notation(): String = if (!inside()) "" else "${'a' + column - 1}$row"
 }
 
 /**
@@ -229,73 +228,79 @@ fun knightMoveNumber(start: Square, end: Square): Int = TODO()
  *
  * Если возможно несколько вариантов самой быстрой траектории, вернуть любой из них.
  */
-fun knightTrajectory(start: Square, end: Square): List<Square> = TODO()
-/*
-{
+fun knightTrajectory(start: Square, end: Square): List<Square> = findWay(start, end, "knight")
 
-    while (start != end){
-        //var usedVertS = mutableSetOf<String>()
-        //var nowPosition = start.notation()
-        var lastPositions = mutableSetOf(start.notation())
+
+fun findWay(start: Square, end: Square, figure: String): List<Square> {
+
+    var smartGrph = Graph()
+    smartGrph.addVertex(start.notation())
+    var lastPositions = mutableListOf(start.notation())
+
+    while (end.notation() !in smartGrph.getVerticesNames()) { //цикл создания вершин. Проверка наличия end
         var newVertS = mutableListOf<String>()
-        while (end.notation() !in lastPositions){
-            for (element in lastPositions) {
-                newVertS.addAll(allKnightSteps(square(element)))
-
-                //заменить lastPositions на fun \|/ описание ниже
-                //список + елемент привязать
+        for (element in lastPositions) { //перебираем все недавние позиции
+            val possibleWay = smartGrph.unusedKnightSteps(square(element))
+            for (i in 0..possibleWay.lastIndex) { //добавление новых вершинн для соответствующего елемента, и соеденинение их
+                smartGrph.addVertex(possibleWay[i])
+                smartGrph.connect(possibleWay[i], element)
             }
-            lastPositions.addAll(newVertS)
-            newVertS.clear()
+            newVertS.addAll(possibleWay)
         }
-
-
+        lastPositions = newVertS
     }
-    return listOf(Square(1,1))
+    var stepList = mutableListOf(end)
+    var stepElement = end
+    while (start !in stepList) {
+        var b = smartGrph.getParent(stepElement.notation())[0]
+        print("$b")
+        stepElement = square(b)
+        stepList.add(stepElement)
+    }
+    return stepList.reversed()
 }
 
 class Graph {
     private data class Vertex(val name: String) {
-        val parentVertex = mutableSetOf<Vertex>()
-        //-> Vertex
+        val parentVertex = mutableListOf<Vertex>()
     }
 
     private val vertices = mutableMapOf<String, Vertex>()
 
     private operator fun get(name: String) = vertices[name] ?: throw IllegalArgumentException()
 
-    //добавить функцию возвращающую список имеющихся вершин
+    fun connect(first: String, second: String) = connect(this[first], this[second])
+
+    private fun connect(child: Vertex, parent: Vertex) {
+        child.parentVertex.add(parent)
+    }
+
+    fun getParent(name: String) = vertices[name]?.parentVertex?.map { it.name } ?: listOf()
+    //fun getParent(name: String) = vertices[name]?.parentVertex[0] ?: "null"
+    //fun getParent(name: String) = vertices[name]?.parentVertex ?: "null"
+
+    fun getVerticesNames() = this.vertices.keys
 
     fun addVertex(name: String) {
         vertices[name] = Vertex(name)
     }
 
-    private fun connect(first: Vertex, second: Vertex) {
-        first.parentVertex.add(second)
-        //second.parentVertex.add(first)
+    fun unusedKnightSteps(position: Square): List<String> {
+        val step1 = Square(position.column + 2, position.row + 1)
+        val step2 = Square(position.column + 2, position.row - 1)
+        val step3 = Square(position.column + 1, position.row + 2)
+        val step4 = Square(position.column + 1, position.row - 2)
+        val step5 = Square(position.column - 1, position.row - 2)
+        val step6 = Square(position.column - 1, position.row + 2)
+        val step7 = Square(position.column - 2, position.row + 1)
+        val step8 = Square(position.column - 2, position.row - 1)
+        var finishList = mutableListOf<String>()
+        var List = mutableListOf(step1, step2, step3, step4, step5, step6, step7, step8)
+        for (i in 0..List.lastIndex) {
+            if ((List[i].inside()) && (List[i].notation() !in vertices.keys)) finishList.add(List[i].notation())
+        }
+        return finishList.toList()
     }
-
-    fun connect(first: String, second: String) = connect(this[first], this[second])
-
-    fun neighbors(name: String) = vertices[name]?.parentVertex?.map { it.name } ?: listOf()
-
 }
 
-fun allKnightSteps(position: Square): List<String> {
-    val step1 = Square(position.column + 2,position.row + 1)
-    val step2 = Square(position.column + 2,position.row - 1)
-    val step3 = Square(position.column + 1,position.row + 2)
-    val step4 = Square(position.column + 1,position.row - 2)
-    val step5 = Square(position.column - 1,position.row - 2)
-    val step6 = Square(position.column - 1,position.row + 2)
-    val step7 = Square(position.column - 2,position.row + 1)
-    val step8 = Square(position.column - 2,position.row - 1)
-    var finishList = mutableListOf<String>()
-    var List = mutableListOf(step1,step2,step3,step4,step5,step6,step7,step8)
-    for (i in 0..List.lastIndex) {
-        if (!List[i].inside()) List.removeAt(i)
-        else finishList.add(List[i].notation())
-    }
-    return finishList.toList()
-}
-        */
+
