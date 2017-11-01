@@ -165,7 +165,7 @@ fun bishopTrajectory(start: Square, end: Square): List<Square> = TODO()
  * Пример: kingMoveNumber(Square(3, 1), Square(6, 3)) = 3.
  * Король может последовательно пройти через клетки (4, 2) и (5, 2) к клетке (6, 3).
  */
-fun kingMoveNumber(start: Square, end: Square): Int = TODO()
+fun kingMoveNumber(start: Square, end: Square): Int = findWay(start, end, "king").size - 1
 
 /**
  * Сложная
@@ -181,7 +181,7 @@ fun kingMoveNumber(start: Square, end: Square): Int = TODO()
  *          kingTrajectory(Square(3, 5), Square(6, 2)) = listOf(Square(3, 5), Square(4, 4), Square(5, 3), Square(6, 2))
  * Если возможно несколько вариантов самой быстрой траектории, вернуть любой из них.
  */
-fun kingTrajectory(start: Square, end: Square): List<Square> = TODO()
+fun kingTrajectory(start: Square, end: Square): List<Square> = findWay(start, end, "king")
 
 /**
  * Сложная
@@ -206,7 +206,8 @@ fun kingTrajectory(start: Square, end: Square): List<Square> = TODO()
  * Пример: knightMoveNumber(Square(3, 1), Square(6, 3)) = 3.
  * Конь может последовательно пройти через клетки (5, 2) и (4, 4) к клетке (6, 3).
  */
-fun knightMoveNumber(start: Square, end: Square): Int = TODO()
+fun knightMoveNumber(start: Square, end: Square): Int = findWay(start, end, "knight").size - 1
+
 
 /**
  * Очень сложная
@@ -232,7 +233,6 @@ fun knightTrajectory(start: Square, end: Square): List<Square> = findWay(start, 
 
 
 fun findWay(start: Square, end: Square, figure: String): List<Square> {
-
     var smartGrph = Graph()
     smartGrph.addVertex(start.notation())
     var lastPositions = mutableListOf(start.notation())
@@ -240,7 +240,11 @@ fun findWay(start: Square, end: Square, figure: String): List<Square> {
     while (end.notation() !in smartGrph.getVerticesNames()) { //цикл создания вершин. Проверка наличия end
         var newVertS = mutableListOf<String>()
         for (element in lastPositions) { //перебираем все недавние позиции
-            val possibleWay = smartGrph.unusedKnightSteps(square(element))
+            //val possibleWay = smartGrph.unusedKnightSteps(square(element))
+            var possibleWay = when (figure) {
+                "knight" -> smartGrph.unusedKnightSteps(square(element))
+                else -> smartGrph.unusedKingSteps(square(element))
+            }
             for (i in 0..possibleWay.lastIndex) { //добавление новых вершинн для соответствующего елемента, и соеденинение их
                 smartGrph.addVertex(possibleWay[i])
                 smartGrph.connect(possibleWay[i], element)
@@ -253,7 +257,6 @@ fun findWay(start: Square, end: Square, figure: String): List<Square> {
     var stepElement = end
     while (start !in stepList) {
         var b = smartGrph.getParent(stepElement.notation())[0]
-        print("$b")
         stepElement = square(b)
         stepList.add(stepElement)
     }
@@ -276,8 +279,6 @@ class Graph {
     }
 
     fun getParent(name: String) = vertices[name]?.parentVertex?.map { it.name } ?: listOf()
-    //fun getParent(name: String) = vertices[name]?.parentVertex[0] ?: "null"
-    //fun getParent(name: String) = vertices[name]?.parentVertex ?: "null"
 
     fun getVerticesNames() = this.vertices.keys
 
@@ -301,6 +302,24 @@ class Graph {
         }
         return finishList.toList()
     }
+
+    fun unusedKingSteps(position: Square): List<String> {
+        val step1 = Square(position.column, position.row + 1)
+        val step2 = Square(position.column, position.row - 1)
+        val step3 = Square(position.column + 1, position.row + 1)
+        val step4 = Square(position.column + 1, position.row - 1)
+        val step5 = Square(position.column + 1, position.row)
+        val step6 = Square(position.column - 1, position.row + 1)
+        val step7 = Square(position.column - 1, position.row - 1)
+        val step8 = Square(position.column - 1, position.row)
+        var finishList = mutableListOf<String>()
+        var List = mutableListOf(step1, step2, step3, step4, step5, step6, step7, step8)
+        for (i in 0..List.lastIndex) {
+            if ((List[i].inside()) && (List[i].notation() !in vertices.keys)) finishList.add(List[i].notation())
+        }
+        return finishList.toList()
+    }
+
 }
 
 
