@@ -165,7 +165,8 @@ fun bishopTrajectory(start: Square, end: Square): List<Square> = TODO()
  * Пример: kingMoveNumber(Square(3, 1), Square(6, 3)) = 3.
  * Король может последовательно пройти через клетки (4, 2) и (5, 2) к клетке (6, 3).
  */
-fun kingMoveNumber(start: Square, end: Square): Int = findWay(start, end, "king").size - 1
+fun kingMoveNumber(start: Square, end: Square): Int =
+        if ((start.inside() && end.inside())) findWay(start, end, "king").size - 1 else throw IllegalArgumentException()
 
 /**
  * Сложная
@@ -206,7 +207,8 @@ fun kingTrajectory(start: Square, end: Square): List<Square> = findWay(start, en
  * Пример: knightMoveNumber(Square(3, 1), Square(6, 3)) = 3.
  * Конь может последовательно пройти через клетки (5, 2) и (4, 4) к клетке (6, 3).
  */
-fun knightMoveNumber(start: Square, end: Square): Int = findWay(start, end, "knight").size - 1
+fun knightMoveNumber(start: Square, end: Square): Int =
+        if ((start.inside() && end.inside())) findWay(start, end, "knight").size - 1 else throw IllegalArgumentException()
 
 
 /**
@@ -240,7 +242,6 @@ fun findWay(start: Square, end: Square, figure: String): List<Square> {
     while (end.notation() !in smartGrph.getVerticesNames()) { //цикл создания вершин. Проверка наличия end
         var newVertS = mutableListOf<String>()
         for (element in lastPositions) { //перебираем все недавние позиции
-            //val possibleWay = smartGrph.unusedKnightSteps(square(element))
             var possibleWay = when (figure) {
                 "knight" -> smartGrph.unusedKnightSteps(square(element))
                 else -> smartGrph.unusedKingSteps(square(element))
