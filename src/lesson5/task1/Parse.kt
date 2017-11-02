@@ -203,14 +203,13 @@ fun plusMinus(expression: String): Int {
         var str = expression.split(" ")
         var sum = str[0].toInt()
         for (i in 1 until str.size) {
-            if (i + 1 >= str.size) throw IllegalArgumentException("")
             when (str[i]) {
                 "+" -> sum += str[i + 1].toInt()
                 "-" -> sum -= str[i + 1].toInt()
             }
         }
         return sum
-    } catch (e: IllegalArgumentException) {
+    } catch (e: Exception) {
         throw IllegalArgumentException("")
     }
 }
@@ -272,24 +271,7 @@ fun mostExpensive(description: String): String {
  *
  * Вернуть -1, если roman не является корректным римским числом
  */
-fun fromRoman(roman: String): Int { //в процессе
-    var rom = roman
-    val symbols = listOf("CM", "CD", "XC", "XL", "IX", "IV", "M", "D", "C", "L", "X", "V", "I")
-    val numbers = listOf(900, 400, 90, 40, 9, 4, 1000, 500, 100, 50, 10, 5, 1)
-    val ogr = listOf<Int>(2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3)
-    //в процессе
-    var sum = 0
-    var i = 0
-    if (roman.isEmpty()) return -1
-    while ((rom != "") && (i < symbols.size)) {
-        var symbolRom = symbols[i]
-        sum += Regex("""$symbolRom""").findAll(rom, 0).count() * numbers[i]
-        rom = rom.replace(Regex("""$symbolRom"""), "")
-        i++
-    }
-    if (rom.isNotEmpty()) return -1
-    return sum
-}
+fun fromRoman(roman: String): Int = TODO()
 
 /**
  * Очень сложная
