@@ -203,7 +203,7 @@ fun plusMinus(expression: String): Int {
         var str = expression.split(" ")
         var sum = str[0].toInt()
         for (i in 1 until str.size) {
-            if (i + 1 >= str.size) return sum
+            if (i + 1 >= str.size) throw IllegalArgumentException("")
             when (str[i]) {
                 "+" -> sum += str[i + 1].toInt()
                 "-" -> sum -= str[i + 1].toInt()

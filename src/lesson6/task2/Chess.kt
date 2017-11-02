@@ -38,8 +38,9 @@ fun square(notation: String): Square {
     if (notation.length != 2) throw IllegalArgumentException()
     val column = notation[0] - 'a' + 1
     val row = notation[1] - '0'
-    if (!Square(column, row).inside()) throw IllegalArgumentException()
-    return Square(column, row)
+    val point = Square(column, row)
+    if (!point.inside()) throw IllegalArgumentException()
+    return point
 }
 
 /**

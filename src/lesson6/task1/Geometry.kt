@@ -183,16 +183,17 @@ class Line private constructor(val b: Double, val angle: Double) {
  *
  * Построить прямую по отрезку
  */
-fun lineBySegment(s: Segment): Line {
+fun lineBySegment(s: Segment): Line = Line(s.begin, findTG(s.begin, s.end))
+
+fun findTG(a: Point, b: Point): Double {
     var tg = when {
-        s.begin.x == s.end.x -> PI / 2
-        s.begin.y == s.end.y -> 0.0
-        else -> atan((s.end.y - s.begin.y) / (s.end.x - s.begin.x))
+        a.x == b.x -> PI / 2
+        a.y == b.y -> 0.0
+        else -> atan((b.y - a.y) / (b.x - a.x))
     }
     if (tg < 0.0) tg += PI
-    return Line(s.begin, tg)
+    return tg
 }
-
 /**
  * Средняя
  *
@@ -205,16 +206,8 @@ fun lineByPoints(a: Point, b: Point): Line = lineBySegment(Segment(a, b))
  *
  * Построить серединный перпендикуляр по отрезку или по двум точкам
  */
-fun bisectorByPoints(a: Point, b: Point): Line {
-    var middlePoint = Point(((b.x + a.x) / 2), ((a.y + b.y) / 2))
-    var tg = when {
-        b.x == a.x -> 0.0
-        b.y == a.y -> PI / 2
-        else -> atan((b.y - a.y) / (b.x - a.x)) + PI / 2
-    }
-    if (tg < 0.0) tg += PI
-    return Line(middlePoint, tg)
-}
+fun bisectorByPoints(a: Point, b: Point): Line =
+        Line(Point((b.x + a.x) / 2, (a.y + b.y) / 2), (findTG(a, b) + PI / 2) % PI)
 
 /**
  * Средняя
@@ -252,21 +245,8 @@ fun circleByThreePoints(a: Point, b: Point, c: Point): Circle {
  * три точки данного множества, либо иметь своим диаметром отрезок,
  * соединяющий две самые удалённые точки в данном множестве.
  */
-fun minContainingCircle(vararg points: Point): Circle {
-    if (points.count() == 0) throw IllegalArgumentException()
-    if (points.count() == 1) return Circle(points[0], 0.0)
-    var max = -1
+fun minContainingCircle(vararg points: Point): Circle = TODO()
 
-    for (i in 0..points.size) {
-        for (j in 1..points.size) {
-            if (i != j) {
-
-            }
-        }
-
-    }
-    return Circle(Point(0.0, 0.0), 0.0)
-}
 
 
 
