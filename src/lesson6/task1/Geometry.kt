@@ -232,7 +232,7 @@ fun circleByThreePoints(a: Point, b: Point, c: Point): Circle {
     val radius = peres.distance(a)
     return Circle(peres, radius)
 }
-//fun
+
 
 /**
  * Очень сложная
