@@ -2,7 +2,7 @@
 package lesson7.task1
 
 /**
- * Ячейка матрицы: row = ряд, column = колонка
+ * Ячейка матрицы: row = ряд, column = столбец
  */
 data class Cell(val row: Int, val column: Int)
 
@@ -50,8 +50,8 @@ class MatrixImpl<E>(override val height: Int, override val width: Int, e: E) : M
 
     init {
         if (height <= 0 || width <= 0) throw IllegalArgumentException()
-        for (i in 0 until height) {
-            for (j in 0 until width) {
+        for (i in 0 until width) {
+            for (j in 0 until height) {
                 matrixMap.put(Cell(i, j), e)
             }
         }
@@ -64,7 +64,7 @@ class MatrixImpl<E>(override val height: Int, override val width: Int, e: E) : M
     override fun set(row: Int, column: Int, value: E) = set(Cell(row, column), value)
 
     override fun set(cell: Cell, value: E) {
-        if (cell.row > width || cell.column > height) throw IllegalArgumentException()
+        if (cell.row !in 0 until height || cell.column !in 0 until width) throw IllegalArgumentException()
         matrixMap[cell] = value
     }
 
