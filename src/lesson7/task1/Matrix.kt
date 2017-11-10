@@ -38,28 +38,34 @@ interface Matrix<E> {
  * height = высота, width = ширина, e = чем заполнить элементы.
  * Бросить исключение IllegalArgumentException, если height или width <= 0.
  */
-fun <E> createMatrix(height: Int, width: Int, e: E): Matrix<E> = TODO()
+fun <E> createMatrix(height: Int, width: Int, e: E): Matrix<E> = MatrixImpl(height, width, e)
 
 /**
  * Средняя сложность
  *
  * Реализация интерфейса "матрица"
  */
-class MatrixImpl<E> : Matrix<E> {
-    override val height: Int = TODO()
+class MatrixImpl<E>(override val height: Int, override val width: Int, e: E) : Matrix<E> {
+    private val matrixMap = mutableMapOf<Cell, E>()
 
-    override val width: Int = TODO()
-
-    override fun get(row: Int, column: Int): E  = TODO()
-
-    override fun get(cell: Cell): E  = TODO()
-
-    override fun set(row: Int, column: Int, value: E) {
-        TODO()
+    init {
+        if (height <= 0 || width <= 0) throw IllegalArgumentException()
+        for (i in 0 until height) {
+            for (j in 0 until width) {
+                matrixMap.put(Cell(i, j), e)
+            }
+        }
     }
 
+    override fun get(row: Int, column: Int): E = get(Cell(row, column))
+
+    override fun get(cell: Cell): E = matrixMap[cell] ?: throw IllegalArgumentException()
+
+    override fun set(row: Int, column: Int, value: E) = set(Cell(row, column), value)
+
     override fun set(cell: Cell, value: E) {
-        TODO()
+        if (cell.row > width || cell.column > height) throw IllegalArgumentException()
+        matrixMap[cell] = value
     }
 
     override fun equals(other: Any?) = TODO()
