@@ -298,9 +298,9 @@ class Graph {
         val step7 = Square(position.column - 2, position.row + 1)
         val step8 = Square(position.column - 2, position.row - 1)
         var finishList = mutableListOf<String>()
-        var List = mutableListOf(step1, step2, step3, step4, step5, step6, step7, step8)
-        for (i in 0..List.lastIndex) {
-            if ((List[i].inside()) && (List[i].notation() !in vertices.keys)) finishList.add(List[i].notation())
+        var someList = mutableListOf(step1, step2, step3, step4, step5, step6, step7, step8)
+        for (i in someList) {
+            if (i.inside() && (i.notation() !in vertices.keys)) finishList.add(i.notation())
         }
         return finishList.toList()
     }
@@ -315,9 +315,9 @@ class Graph {
         val step7 = Square(position.column - 1, position.row - 1)
         val step8 = Square(position.column - 1, position.row)
         var finishList = mutableListOf<String>()
-        var List = mutableListOf(step1, step2, step3, step4, step5, step6, step7, step8)
-        for (i in 0..List.lastIndex) {
-            if ((List[i].inside()) && (List[i].notation() !in vertices.keys)) finishList.add(List[i].notation())
+        var someList = mutableListOf(step1, step2, step3, step4, step5, step6, step7, step8)
+        for (i in someList) {
+            if (i.inside() && (i.notation() !in vertices.keys)) finishList.add(i.notation())
         }
         return finishList.toList()
     }
