@@ -57,7 +57,7 @@ class MatrixImpl<E>(override val height: Int, override val width: Int, e: E) : M
         }
     }
 
-    override fun get(row: Int, column: Int): E = get(Cell(row, column))
+    override fun get(row: Int, column: Int): E = get(Cell(column, row))
 
     override fun get(cell: Cell): E = matrixMap[cell] ?: throw IllegalArgumentException()
 
@@ -70,6 +70,6 @@ class MatrixImpl<E>(override val height: Int, override val width: Int, e: E) : M
 
     override fun equals(other: Any?) = TODO()
 
-    override fun toString(): String = TODO()
+    override fun toString(): String = matrixMap.values.toString()
 }
 

@@ -141,6 +141,7 @@ fun strIntToMonth(strMonth: String): String = when (strMonth) {
  * При неверном формате вернуть пустую строку
  */
 fun flattenPhoneNumber(phone: String): String {
+    val y = (Regex("""\[""").findAll(phone, 0).count() > 1) || (Regex("""\]""").findAll(phone, 0).count() > 1)
     if (phone.contains(Regex("""[^\+\d \(\)-]""")) || (!phone.contains(Regex("""\d""")))) return ""
     val newPhone = phone.replace(Regex("""[^\+\d]"""), "")
     if ((Regex("""\+""").findAll(newPhone, 1).count() > 0)) return ""
