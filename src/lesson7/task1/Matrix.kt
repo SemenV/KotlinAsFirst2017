@@ -54,7 +54,7 @@ class MatrixImpl<E>(setHeight: Int, setWidth: Int, e: E) : Matrix<E> {
     private val matrixMap = mutableMapOf<Cell, E>()
 
     init {
-        if (height < 0 || width < 0) throw IllegalArgumentException()
+        if (height <= 0 || width <= 0) throw IllegalArgumentException()
         for (i in 0 until width) {
             for (j in 0 until height) {
                 matrixMap.put(Cell(j, i), e)
