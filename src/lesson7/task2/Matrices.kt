@@ -108,7 +108,7 @@ fun generateRectangles(height: Int, width: Int): Matrix<Int> {
     var matr = createMatrix(height, width, 0)
     var value = 1
     var k = -1
-    while (value <= ceil(max(height, width) / 2.0)) {
+    while (value <= max(height, width) / 2) {
         k++
         for (i in k until width - k) {
             matr[k, i] = value
