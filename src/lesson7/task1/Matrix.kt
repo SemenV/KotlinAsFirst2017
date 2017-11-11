@@ -45,7 +45,12 @@ fun <E> createMatrix(height: Int, width: Int, e: E): Matrix<E> = MatrixImpl(heig
  *
  * Реализация интерфейса "матрица"
  */
-class MatrixImpl<E>(override val height: Int, override val width: Int, e: E) : Matrix<E> {
+class MatrixImpl<E>(setHeight: Int, setWidth: Int, e: E) : Matrix<E> {
+
+    override val height: Int = setHeight
+
+    override val width: Int = setWidth
+
     private val matrixMap = mutableMapOf<Cell, E>()
 
     init {
