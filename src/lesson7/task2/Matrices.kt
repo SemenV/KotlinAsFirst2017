@@ -1,7 +1,6 @@
 @file:Suppress("UNUSED_PARAMETER")
 package lesson7.task2
 
-import lesson5.task1.bestHighJump
 import lesson7.task1.Matrix
 import lesson7.task1.createMatrix
 import java.lang.Math.*
@@ -107,7 +106,7 @@ fun generateRectangles(height: Int, width: Int): Matrix<Int> {
     var matr = createMatrix(height, width, 0)
     var value = 0
     var k = -1
-    while (value <= ceil(min(height, width) / 2.0)) {
+    while (value < ceil(min(height, width) / 2.0)) {
         k++
         value++
         for (i in k until height - k) { // |  | by i
