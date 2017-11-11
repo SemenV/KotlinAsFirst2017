@@ -55,24 +55,24 @@ class MatrixImpl<E>(override val height: Int, override val width: Int, e: E) : M
                 matrixMap.put(Cell(j, i), e)
             }
         }
-        println(matrixMap)
     }
 
     override fun get(row: Int, column: Int): E = get(Cell(row, column))
 
     override fun get(cell: Cell): E = matrixMap[cell] ?: throw IllegalArgumentException()
 
-    override fun set(row: Int, column: Int, value: E) {
-        set(Cell(row, column), value)
-    }
+    override fun set(row: Int, column: Int, value: E) = set(Cell(row, column), value)
 
     override fun set(cell: Cell, value: E) {
-        if (cell.row !in 0 until height || cell.column !in 0 until width) throw IllegalArgumentException()
+        if (cell.row !in 0 until height || cell.column !in 0 until width) throw IllegalArgumentException("row=${cell.row} column=${cell.column}")
         matrixMap[cell] = value
-        println(matrixMap)
     }
 
-    override fun equals(other: Any?) = TODO()
+    override fun equals(other: Any?) =
+            other is MatrixImpl<*> &&
+                    height == other.height &&
+                    width == other.width &&
+                    other.matrixMap == matrixMap
 
     override fun toString(): String = matrixMap.values.toString()
 }

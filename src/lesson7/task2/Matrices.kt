@@ -1,6 +1,7 @@
 @file:Suppress("UNUSED_PARAMETER")
 package lesson7.task2
 
+import lesson5.task1.bestHighJump
 import lesson7.task1.Matrix
 import lesson7.task1.createMatrix
 
@@ -59,7 +60,33 @@ operator fun Matrix<Int>.plus(other: Matrix<Int>): Matrix<Int> {
  * 10 11 12  5
  *  9  8  7  6
  */
-fun generateSpiral(height: Int, width: Int): Matrix<Int> = TODO()
+fun generateSpiral(height: Int, width: Int): Matrix<Int> {
+    var matr = createMatrix(height, width, 0)
+    var value = 1
+    var k = -1
+    while (value <= height * width) {
+        k++
+        for (i in k until width - k) {
+            if (value > height * width) break
+            matr[k, i] = value++
+        }
+        for (i in k + 1 until height - k) {
+            if (value > height * width) break
+            matr[i, width - k - 1] = value++
+        }
+        for (i in width - k - 2 downTo k) {
+            if (value > height * width) break
+            matr[height - k - 1, i] = value++
+        }
+        for (i in height - k - 2 downTo k + 1) {
+            if (value > height * width) break
+            matr[i, k] = value++
+        }
+        if (value > height * width) break
+    }
+    return matr
+}
+
 
 /**
  * Сложная
@@ -75,7 +102,35 @@ fun generateSpiral(height: Int, width: Int): Matrix<Int> = TODO()
  *  1  2  2  2  2  1
  *  1  1  1  1  1  1
  */
-fun generateRectangles(height: Int, width: Int): Matrix<Int> = TODO()
+fun generateRectangles(height: Int, width: Int): Matrix<Int> {
+    var matr = createMatrix(height, width, 0)
+    var value = 1
+    var k = -1
+    while (value <= height * width) {
+        k++
+        for (i in k until width - k) {
+            if (value > height * width) break
+            matr[k, i] = value
+        }
+        for (i in k + 1 until height - k) {
+            if (value > height * width) break
+            matr[i, width - k - 1] = value
+        }
+        for (i in width - k - 2 downTo k) {
+            if (value > height * width) break
+            matr[height - k - 1, i] = value
+        }
+        for (i in height - k - 2 downTo k + 1) {
+            if (value > height * width) break
+            matr[i, k] = value
+        }
+        if (value > height * width) break
+        value++
+    }
+    return matr
+}
+
+
 
 /**
  * Сложная
