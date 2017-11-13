@@ -167,7 +167,7 @@ fun bishopTrajectory(start: Square, end: Square): List<Square> = TODO()
  * Король может последовательно пройти через клетки (4, 2) и (5, 2) к клетке (6, 3).
  */
 fun kingMoveNumber(start: Square, end: Square): Int =
-        if ((start.inside() && end.inside())) findWay(start, end, "king").size - 1 else throw IllegalArgumentException()
+        if ((start.inside() && end.inside())) findWay(start, end, KingGraph()).size - 1 else throw IllegalArgumentException()
 
 /**
  * Сложная
@@ -183,7 +183,7 @@ fun kingMoveNumber(start: Square, end: Square): Int =
  *          kingTrajectory(Square(3, 5), Square(6, 2)) = listOf(Square(3, 5), Square(4, 4), Square(5, 3), Square(6, 2))
  * Если возможно несколько вариантов самой быстрой траектории, вернуть любой из них.
  */
-fun kingTrajectory(start: Square, end: Square): List<Square> = findWay(start, end, "king")
+fun kingTrajectory(start: Square, end: Square): List<Square> = findWay(start, end, KingGraph())
 
 /**
  * Сложная
@@ -209,7 +209,7 @@ fun kingTrajectory(start: Square, end: Square): List<Square> = findWay(start, en
  * Конь может последовательно пройти через клетки (5, 2) и (4, 4) к клетке (6, 3).
  */
 fun knightMoveNumber(start: Square, end: Square): Int =
-        if ((start.inside() && end.inside())) findWay(start, end, "knight").size - 1 else throw IllegalArgumentException()
+        if ((start.inside() && end.inside())) findWay(start, end, KnightGraph()).size - 1 else throw IllegalArgumentException()
 
 
 /**
@@ -232,24 +232,20 @@ fun knightMoveNumber(start: Square, end: Square): Int =
  *
  * Если возможно несколько вариантов самой быстрой траектории, вернуть любой из них.
  */
-fun knightTrajectory(start: Square, end: Square): List<Square> = findWay(start, end, "knight")
+fun knightTrajectory(start: Square, end: Square): List<Square> = findWay(start, end, KnightGraph())
 
 
-fun findWay(start: Square, end: Square, figure: String): List<Square> {
-    var smartGrph = Graph()
+fun findWay(start: Square, end: Square, smartGrph: Graph): List<Square> {
     smartGrph.addVertex(start.notation())
     var lastPositions = mutableListOf(start.notation())
-
     while (end.notation() !in smartGrph.getVerticesNames()) { //цикл создания вершин. Проверка наличия end
         var newVertS = mutableListOf<String>()
-        for (element in lastPositions) { //перебираем все недавние позиции
-            var possibleWay = when (figure) {
-                "knight" -> smartGrph.unusedKnightSteps(square(element))
-                else -> smartGrph.unusedKingSteps(square(element))
-            }
-            for (i in 0..possibleWay.lastIndex) { //добавление новых вершинн для соответствующего елемента, и соеденинение их
-                smartGrph.addVertex(possibleWay[i])
-                smartGrph.connect(possibleWay[i], element)
+        for (element in lastPositions) {                //перебираем все недавние позиции
+            var possibleWay = smartGrph.unusedSteps(square(element))
+            possibleWay.forEach {
+                //добавление новых вершинн для соответствующего елемента, и соеденинение их
+                smartGrph.addVertex(it)
+                smartGrph.connect(it, element)
             }
             newVertS.addAll(possibleWay)
         }
@@ -265,18 +261,18 @@ fun findWay(start: Square, end: Square, figure: String): List<Square> {
     return stepList.reversed()
 }
 
-class Graph {
-    private data class Vertex(val name: String) {
+abstract class Graph {
+    protected data class Vertex(val name: String) {
         val parentVertex = mutableListOf<Vertex>()
     }
 
-    private val vertices = mutableMapOf<String, Vertex>()
+    protected val vertices = mutableMapOf<String, Vertex>()
 
-    private operator fun get(name: String) = vertices[name] ?: throw IllegalArgumentException()
+    protected operator fun get(name: String) = vertices[name] ?: throw IllegalArgumentException()
 
     fun connect(first: String, second: String) = connect(this[first], this[second])
 
-    private fun connect(child: Vertex, parent: Vertex) {
+    protected fun connect(child: Vertex, parent: Vertex) {
         child.parentVertex.add(parent)
     }
 
@@ -288,7 +284,11 @@ class Graph {
         vertices[name] = Vertex(name)
     }
 
-    fun unusedKnightSteps(position: Square): List<String> {
+    abstract fun unusedSteps(position: Square): List<String>
+}
+
+class KnightGraph : Graph() {
+    override fun unusedSteps(position: Square): List<String> {
         val step1 = Square(position.column + 2, position.row + 1)
         val step2 = Square(position.column + 2, position.row - 1)
         val step3 = Square(position.column + 1, position.row + 2)
@@ -304,8 +304,10 @@ class Graph {
         }
         return finishList.toList()
     }
+}
 
-    fun unusedKingSteps(position: Square): List<String> {
+class KingGraph : Graph() {
+    override fun unusedSteps(position: Square): List<String> {
         val step1 = Square(position.column, position.row + 1)
         val step2 = Square(position.column, position.row - 1)
         val step3 = Square(position.column + 1, position.row + 1)
@@ -321,7 +323,6 @@ class Graph {
         }
         return finishList.toList()
     }
-
 }
 
 
